@@ -110,10 +110,10 @@ namespace FinanceCounter.Models
       while(rdr.Read())
       {
         int itemId = rdr.GetInt32(0);
-        int categpryId = rdr.GetInt32(1);
-        string itemName = rdr.GetString(2);
-        double itemPrice = rdr.GetDouble(3);
-        Item newItem= new Item(categpryId, itemName, itemPrice, itemId);
+        int categpryId = rdr.GetInt32(3);
+        string itemName = rdr.GetString(1);
+        double itemPrice = rdr.GetDouble(2);
+        Item newItem= new Item(itemName, itemPrice, categpryId, itemId);
         allCategoryItems.Add(newItem);
       }
       conn.Close();
