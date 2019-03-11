@@ -1,8 +1,0 @@
-/Users/Guest/Desktop/ex/FinanceCounter/bin/Debug/netcoreapp1.1/FinanceCounter.deps.json
-/Users/Guest/Desktop/ex/FinanceCounter/bin/Debug/netcoreapp1.1/FinanceCounter.runtimeconfig.json
-/Users/Guest/Desktop/ex/FinanceCounter/bin/Debug/netcoreapp1.1/FinanceCounter.runtimeconfig.dev.json
-/Users/Guest/Desktop/ex/FinanceCounter/obj/Debug/netcoreapp1.1/FinanceCounter.AssemblyInfo.cs
-/Users/Guest/Desktop/ex/FinanceCounter/bin/Debug/netcoreapp1.1/FinanceCounter.dll
-/Users/Guest/Desktop/ex/FinanceCounter/bin/Debug/netcoreapp1.1/FinanceCounter.pdb
-/Users/Guest/Desktop/ex/FinanceCounter/obj/Debug/netcoreapp1.1/FinanceCounter.dll
-/Users/Guest/Desktop/ex/FinanceCounter/obj/Debug/netcoreapp1.1/FinanceCounter.pdb
