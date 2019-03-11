@@ -3,13 +3,13 @@ using MySql.Data.MySqlItem;
 
 namespace HairSalon.Models
 {
-  public class Stylist
+  public class Category
   {
     private int _id;
     private string _name;
     private double _total;
 
-    public Stylist(string name, double total = 0, int id = 0)
+    public Category(string name, double total = 0, int id = 0)
     {
       _name = name;
       _id = id;
@@ -19,7 +19,6 @@ namespace HairSalon.Models
 
     public string GetName(){return _name;}
     public int GetId(){return _id;}
-    public double GetTotal(){return _total;}
 
     public void SetName(string newName){_name = newName;}
     public void SetTotal(double newTotal){_total = newTotal;}
@@ -98,15 +97,15 @@ namespace HairSalon.Models
 
     public List<Item> GetItems()
     {
-      List<Item> allStylistItems = new List<Item>{};
+      List<Item> allCategoryItems = new List<Item>{};
       MySqlConnection conn = DB.Connection();
-     conn.Open();
-     var cmd = conn.CreateCommand() as MySqlCommand;
-     cmd.CommandText = "SELECT * FROM items WHERE stylist_id = @stylist_id;";
-     MySqlParameter stylistId = new MySqlParameter();
-      stylistId.ParameterName = "@stylist_id";
-      stylistId.Value = this._id;
-      cmd.Parameters.Add(stylistId);
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = "SELECT * FROM items WHERE category_id = @category_id;";
+      MySqlParameter categoryId = new MySqlParameter();
+      categoryId.ParameterName = "@category_id";
+      categoryId.Value = this._id;
+      cmd.Parameters.Add(categoryId);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
@@ -115,14 +114,30 @@ namespace HairSalon.Models
         string itemName = rdr.GetString(2);
         double itemPrice = rdr.GetDouble(3);
         Item newItem= new Item(categpryId, itemName, itemPrice, itemId);
-        allStylistItems.Add(newItem);
+        allCategoryItems.Add(newItem);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allStylistItems;
+      return allCategoryItems;
+    }
+
+    public static double GetTotal()
+    {
+      double total = 0;
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = "SELECT price FROM items;";
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      while(rdr.Read())
+      {
+        double itemPrice = rdr.GetDouble(3);
+        total += itemPrice;
+      }
+      return total;
     }
 
 

@@ -7,8 +7,8 @@ namespace FinanceCounter.Models
   {
     private string _name;
     private int _id;
-    private int _categoryId;
     private double _price;
+    private int _categoryId;
 
     public Item (string name, double price, int categoryId, int id = 0)
     {
