@@ -22,9 +22,9 @@ namespace FinanceCounter.Controllers
     }
 
     [HttpPost("/categories")]
-    public ActionResult Create(string categoryName)
+    public ActionResult Create(string categoryName, double total)
     {
-      Category newCategory = new Category(categoryName);
+      Category newCategory = new Category(categoryName, total);
       newCategory.Save();
       List<Category> allCategories = Category.GetAll();
       return View("Index", allCategories);
@@ -37,39 +37,37 @@ namespace FinanceCounter.Controllers
       Category selectedCategory = Category.Find(id);
       List<Item> categoryItems = selectedCategory.GetItems();
       List<Item> allItems = Item.GetAll();
-      List<Item> categoryItems = selectedCategory.GetItems();
       model.Add("category", selectedCategory);
       model.Add("categoryItems", categoryItems);
-      model.Add("items", categoryItems);
       model.Add("allItems", allItems);
       return View(model);
     }
 
-    [HttpPost("/categories/{categoryId}/items")]
-    public ActionResult Create(int categoryId, string itemName, int itemPhone)
-    {
-      Dictionary<string, object> model = new Dictionary<string, object>();
-      Category selectedCategory = Category.Find(categoryId);
-      Item newItem = new Item(categoryId, itemName, itemPhone);
-      newItem.Save();
-      List<Item> categoryItems = selectedCategory.GetItems();
-      List<Item> allItems = Item.GetAll();
-      List<Item> categoryItems = selectedCategory.GetItems();
-      model.Add("items", categoryItems);
-      model.Add("categoryItems", categoryItems);
-      model.Add("category", selectedCategory);
-      model.Add("allItems", allItems);
-      return View("Show", model);
-    }
-
-    [HttpPost("/categories/{categoryId}/items/new")]
-    public ActionResult AddItem(int categoryId, int itemId)
-    {
-      Category category = Category.Find(categoryId);
-      Item item = Item.Find(itemId);
-      category.AddItem(item);
-      return RedirectToAction("Show",  new { id = categoryId });
-    }
+    // [HttpPost("/categories/{categoryId}/items")]
+    // public ActionResult Create(string name, double price, int categoryId,)
+    // {
+    //   Dictionary<string, object> model = new Dictionary<string, object>();
+    //   Category selectedCategory = Category.Find(categoryId);
+    //   Item newItem = new Item(name, price, categoryId);
+    //   newItem.Save();
+    //   List<Item> categoryItems = selectedCategory.GetItems();
+    //   List<Item> allItems = Item.GetAll();
+    //   List<Item> categoryItems = selectedCategory.GetItems();
+    //   model.Add("items", categoryItems);
+    //   model.Add("categoryItems", categoryItems);
+    //   model.Add("category", selectedCategory);
+    //   model.Add("allItems", allItems);
+    //   return View("Show", model);
+    // }
+    //
+    // [HttpPost("/categories/{categoryId}/items/new")]
+    // public ActionResult AddItem(int categoryId, int itemId)
+    // {
+    //   Category category = Category.Find(categoryId);
+    //   Item item = Item.Find(itemId);
+    //   category.AddItem(item);
+    //   return RedirectToAction("Show",  new { id = categoryId });
+    // }
 
 
   }
