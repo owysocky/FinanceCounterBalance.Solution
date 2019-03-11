@@ -116,7 +116,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO items (name, category_id) VALUES (@name, @category_id);";
+      cmd.CommandText = @"INSERT INTO items (name, price, category_id) VALUES (@name, @price, @category_id);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this._name;
@@ -125,6 +125,10 @@ namespace FinanceCounter.Models
       categoryId.ParameterName = "@category_id";
       categoryId.Value = this._categoryId;
       cmd.Parameters.Add(categoryId);
+      MySqlParameter price = new MySqlParameter();
+      price.ParameterName = "@price";
+      price.Value = this._price;
+      cmd.Parameters.Add(price);
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
       conn.Close();

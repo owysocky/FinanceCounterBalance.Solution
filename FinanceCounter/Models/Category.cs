@@ -1,7 +1,8 @@
 using System.Collections.Generic;
-using MySql.Data.MySqlItem;
+using MySql.Data.MySqlClient;
 
-namespace HairSalon.Models
+
+namespace FinanceCounter.Models
 {
   public class Category
   {
@@ -21,7 +22,6 @@ namespace HairSalon.Models
     public int GetId(){return _id;}
 
     public void SetName(string newName){_name = newName;}
-    public void SetTotal(double newTotal){_total = newTotal;}
 
     public static List<Category> GetAll()
     {
@@ -95,36 +95,36 @@ namespace HairSalon.Models
       }
     }
 
-    public List<Item> GetItems()
-    {
-      List<Item> allCategoryItems = new List<Item>{};
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-      var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT * FROM items WHERE category_id = @category_id;";
-      MySqlParameter categoryId = new MySqlParameter();
-      categoryId.ParameterName = "@category_id";
-      categoryId.Value = this._id;
-      cmd.Parameters.Add(categoryId);
-      var rdr = cmd.ExecuteReader() as MySqlDataReader;
-      while(rdr.Read())
-      {
-        int itemId = rdr.GetInt32(0);
-        int categpryId = rdr.GetInt32(1);
-        string itemName = rdr.GetString(2);
-        double itemPrice = rdr.GetDouble(3);
-        Item newItem= new Item(categpryId, itemName, itemPrice, itemId);
-        allCategoryItems.Add(newItem);
-      }
-      conn.Close();
-      if (conn != null)
-      {
-        conn.Dispose();
-      }
-      return allCategoryItems;
-    }
+    // public List<Item> GetItems()
+    // {
+    //   List<Item> allCategoryItems = new List<Item>{};
+    //   MySqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //   var cmd = conn.CreateCommand() as MySqlCommand;
+    //   cmd.CommandText = "SELECT * FROM items WHERE category_id = @category_id;";
+    //   MySqlParameter categoryId = new MySqlParameter();
+    //   categoryId.ParameterName = "@category_id";
+    //   categoryId.Value = this._id;
+    //   cmd.Parameters.Add(categoryId);
+    //   var rdr = cmd.ExecuteReader() as MySqlDataReader;
+    //   while(rdr.Read())
+    //   {
+    //     int itemId = rdr.GetInt32(0);
+    //     int categpryId = rdr.GetInt32(1);
+    //     string itemName = rdr.GetString(2);
+    //     double itemPrice = rdr.GetDouble(3);
+    //     Item newItem= new Item(categpryId, itemName, itemPrice, itemId);
+    //     allCategoryItems.Add(newItem);
+    //   }
+    //   conn.Close();
+    //   if (conn != null)
+    //   {
+    //     conn.Dispose();
+    //   }
+    //   return allCategoryItems;
+    // }
 
-    public static double GetTotal()
+    public double GetTotal()
     {
       double total = 0;
       MySqlConnection conn = DB.Connection();
@@ -134,9 +134,10 @@ namespace HairSalon.Models
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        double itemPrice = rdr.GetDouble(3);
+        double itemPrice = rdr.GetDouble(0);
         total += itemPrice;
       }
+      // _total = total;
       return total;
     }
 
@@ -147,38 +148,38 @@ namespace HairSalon.Models
 
 
 
-// // ==========================TESTS =========================================
-    // `public override bool Equals(System.Object otherCategory)
-    // {
-    //   if (!(otherCategory is Category))
-    //   {
-    //     return false;
-    //   }
-    //   else
-    //   {
-    //     Category newCategory = (Category) otherCategory;
-    //     bool idEquality = this.GetId().Equals(newCategory.GetId());
-    //     bool nameEquality = this.GetName().Equals(newCategory.GetName());
-    //     return (idEquality && nameEquality);
-    //   }
-    // }
-    // public override int GetHashCode()
-    // {
-    //   return this.GetId().GetHashCode();
-    // }
-    //
-    // public static void ClearAll()
-    // {
-    //   MySqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //   var cmd = conn.CreateCommand() as MySqlCommand;
-    //   cmd.CommandText = @"DELETE FROM categories;";
-    //   cmd.ExecuteNonQuery();
-    //   conn.Close();
-    //   if (conn != null)
-    //   {
-    //     conn.Dispose();
-    //   }
-    // }
+// ==========================TESTS =========================================
+    public override bool Equals(System.Object otherCategory)
+    {
+      if (!(otherCategory is Category))
+      {
+        return false;
+      }
+      else
+      {
+        Category newCategory = (Category) otherCategory;
+        bool idEquality = this.GetId().Equals(newCategory.GetId());
+        bool nameEquality = this.GetName().Equals(newCategory.GetName());
+        return (idEquality && nameEquality);
+      }
+    }
+    public override int GetHashCode()
+    {
+      return this.GetId().GetHashCode();
+    }
+
+    public static void ClearAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM categories;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
   }
 }
