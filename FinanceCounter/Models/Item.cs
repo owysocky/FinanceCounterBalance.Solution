@@ -50,20 +50,6 @@ namespace FinanceCounter.Models
       return allItems;
     }
 
-    public static void ClearAll()
-    {
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-      var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM items;";
-      cmd.ExecuteNonQuery();
-      conn.Close();
-      if (conn != null)
-      {
-       conn.Dispose();
-      }
-    }
-
     public static Item Find(int id)
     {
       MySqlConnection conn = DB.Connection();
@@ -93,22 +79,6 @@ namespace FinanceCounter.Models
         conn.Dispose();
       }
       return newItem;
-    }
-
-    public override bool Equals(System.Object otherItem)
-    {
-      if (!(otherItem is Item))
-      {
-        return false;
-      }
-      else
-      {
-         Item newItem = (Item) otherItem;
-         bool idEquality = this.GetId() == newItem.GetId();
-         bool nameEquality = this.GetName() == newItem.GetName();
-         bool categoryEquality = this.GetCategoryId() == newItem.GetCategoryId();
-         return (idEquality && nameEquality && categoryEquality);
-       }
     }
 
     public void Save()
@@ -161,5 +131,41 @@ namespace FinanceCounter.Models
       }
     }
 
+// ====================== TESTS =================================
+
+    public override bool Equals(System.Object otherItem)
+    {
+      if (!(otherItem is Item))
+      {
+        return false;
+      }
+      else
+      {
+         Item newItem = (Item) otherItem;
+         bool idEquality = this.GetId() == newItem.GetId();
+         bool nameEquality = this.GetName() == newItem.GetName();
+         bool categoryEquality = this.GetCategoryId() == newItem.GetCategoryId();
+         return (idEquality && nameEquality && categoryEquality);
+       }
+    }
+
+    public override int GetHashCode()
+    {
+      return this.GetId().GetHashCode();
+    }
+
+    public static void ClearAll()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM items;";
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+       conn.Dispose();
+      }
+    }
   }
 }
