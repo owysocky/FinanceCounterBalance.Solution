@@ -137,7 +137,7 @@ namespace FinanceCounter.Models
         double expenseItemPrice = rdr.GetDouble(0);
         total += expenseItemPrice;
       }
-      // _total = total;
+      //_total = total;
       return total;
     }
 
