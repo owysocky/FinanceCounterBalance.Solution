@@ -4,13 +4,13 @@ using MySql.Data.MySqlClient;
 
 namespace FinanceCounter.Models
 {
-  public class Category
+  public class IncomeCategory
   {
     private int _id;
     private string _name;
     private double _total;
 
-    public Category(string name, double total = 0, int id = 0)
+    public IncomeCategory(string name, double total = 0, int id = 0)
     {
       _name = name;
       _id = id;
@@ -29,14 +29,14 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM categories;";
+      cmd.CommandText = @"SELECT * FROM incomeCategories;";
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        int categoryId = rdr.GetInt32(0);
-        string categoryName = rdr.GetString(1);
-        double categoryTotal = rdr.GetDouble(2);
-        Category newCategory = new Category(categoryName, categoryTotal, categoryId);
+        int incomeCategoryId = rdr.GetInt32(0);
+        string incomeCategoryName = rdr.GetString(1);
+        double incomeCategoryTotal = rdr.GetDouble(2);
+        Category newCategory = new Category(incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
         allCategories.Add(newCategory);
       }
       conn.Close();
@@ -52,22 +52,22 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM categories WHERE id = (@searchId);";
+      cmd.CommandText = @"SELECT * FROM incomeCategories WHERE id = (@searchId);";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = id;
       cmd.Parameters.Add(searchId);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
-      int categoryId = 0;
-      string categoryName = "";
-      double categoryTotal = 0;
+      int incomeCategoryId = 0;
+      string incomeCategoryName = "";
+      double incomeCategoryTotal = 0;
       while(rdr.Read())
       {
-        categoryId = rdr.GetInt32(0);
-        categoryName = rdr.GetString(1);
-        categoryTotal = rdr.GetDouble(2);
+        incomeCategoryId = rdr.GetInt32(0);
+        incomeCategoryName = rdr.GetString(1);
+        incomeCategoryTotal = rdr.GetDouble(2);
       }
-      Category newCategory = new Category(categoryName, categoryTotal, categoryId);
+      Category newCategory = new Category(incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
       conn.Close();
       if (conn != null)
       {
@@ -81,7 +81,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO categories (name) VALUES (@name);";
+      cmd.CommandText = @"INSERT INTO incomeCategories (name) VALUES (@name);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this._name;
@@ -101,11 +101,11 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT * FROM items WHERE category_id = @category_id;";
-      MySqlParameter categoryId = new MySqlParameter();
-      categoryId.ParameterName = "@category_id";
-      categoryId.Value = this._id;
-      cmd.Parameters.Add(categoryId);
+      cmd.CommandText = "SELECT * FROM items WHERE incomeCategory_id = @incomeCategory_id;";
+      MySqlParameter incomeCategoryId = new MySqlParameter();
+      incomeCategoryId.ParameterName = "@incomeCategory_id";
+      incomeCategoryId.Value = this._id;
+      cmd.Parameters.Add(incomeCategoryId);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
@@ -146,7 +146,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM categories WHERE id = @searchId; DELETE FROM items WHERE category_id = @searchId;";
+      cmd.CommandText = @"DELETE FROM incomeCategories WHERE id = @searchId; DELETE FROM items WHERE incomeCategory_id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -164,7 +164,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"UPDATE categories SET name = @newName WHERE id = @searchId;";
+      cmd.CommandText = @"UPDATE incomeCategories SET name = @newName WHERE id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -187,7 +187,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM items WHERE categories_id = @searchId;";
+      cmd.CommandText = @"DELETE FROM items WHERE incomeCategories_id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -205,7 +205,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE  FROM categories; DELETE FROM items;";
+      cmd.CommandText = @"DELETE  FROM incomeCategories; DELETE FROM items;";
       cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)
@@ -242,7 +242,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM categories;";
+      cmd.CommandText = @"DELETE FROM incomeCategories;";
       cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)
