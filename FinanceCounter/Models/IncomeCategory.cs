@@ -7,11 +7,13 @@ namespace FinanceCounter.Models
   public class IncomeCategory
   {
     private int _id;
+    private int _account_id;
     private string _name;
     private double _total;
 
-    public IncomeCategory(string name, double total = 0, int id = 0)
+    public IncomeCategory(int account_id, string name, double total = 0, int id = 0)
     {
+      _account_id = account_id;
       _name = name;
       _id = id;
       _total = total;
@@ -36,7 +38,8 @@ namespace FinanceCounter.Models
         int incomeCategoryId = rdr.GetInt32(0);
         string incomeCategoryName = rdr.GetString(1);
         double incomeCategoryTotal = rdr.GetDouble(2);
-        IncomeCategory newIncomeCategory = new IncomeCategory(incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
+        int incomeAccountId = rdr.GetInt32(3);
+        IncomeCategory newIncomeCategory = new IncomeCategory(incomeAccountId, incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
         allCategories.Add(newIncomeCategory);
       }
       conn.Close();
@@ -61,13 +64,15 @@ namespace FinanceCounter.Models
       int incomeCategoryId = 0;
       string incomeCategoryName = "";
       double incomeCategoryTotal = 0;
+      int incomeAccountId = 0;
       while(rdr.Read())
       {
         incomeCategoryId = rdr.GetInt32(0);
         incomeCategoryName = rdr.GetString(1);
         incomeCategoryTotal = rdr.GetDouble(2);
+        incomeAccountId = rdr.GetInt32(3);
       }
-      IncomeCategory newIncomeCategory = new IncomeCategory(incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
+      IncomeCategory newIncomeCategory = new IncomeCategory(incomeAccountId, incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
       conn.Close();
       if (conn != null)
       {
@@ -81,11 +86,15 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO incomeCategories (name) VALUES (@name);";
+      cmd.CommandText = @"INSERT INTO incomeCategories (name, account_id) VALUES (@name, @accountId);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this._name;
       cmd.Parameters.Add(name);
+      MySqlParameter accountId = new MySqlParameter();
+      accountId.ParameterName = "@accountId";
+      accountId.Value = this._account_id;
+      cmd.Parameters.Add(accountId);
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
       conn.Close();
@@ -97,7 +106,7 @@ namespace FinanceCounter.Models
 
     public List<IncomeItem> GetIncomeItems()
     {
-      List<IncomeItem> allIncomeCategoryIncomeItems = new List<IncomeItem>{};
+      List<IncomeItem> allIncomeCategoryItems = new List<IncomeItem>{};
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
@@ -114,14 +123,14 @@ namespace FinanceCounter.Models
         string incomeItemName = rdr.GetString(1);
         double incomeItemPrice = rdr.GetDouble(2);
         IncomeItem newIncomeItem= new IncomeItem(incomeItemName, incomeItemPrice, categpryId, incomeItemId);
-        allIncomeCategoryIncomeItems.Add(newIncomeItem);
+        allIncomeCategoryItems.Add(newIncomeItem);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allIncomeCategoryIncomeItems;
+      return allIncomeCategoryItems;
     }
 
     public double GetTotal()

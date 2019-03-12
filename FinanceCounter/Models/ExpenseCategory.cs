@@ -7,11 +7,13 @@ namespace FinanceCounter.Models
   public class ExpenseCategory
   {
     private int _id;
+    private int _account_id;
     private string _name;
     private double _total;
 
-    public ExpenseCategory(string name, double total = 0, int id = 0)
+    public ExpenseCategory(int account_id, string name, double total = 0, int id = 0)
     {
+      _account_id = account_id;
       _name = name;
       _id = id;
       _total = total;
@@ -36,7 +38,8 @@ namespace FinanceCounter.Models
         int expenseCategoryId = rdr.GetInt32(0);
         string expenseCategoryName = rdr.GetString(1);
         double expenseCategoryTotal = rdr.GetDouble(2);
-        ExpenseCategory newExpenseCategory = new ExpenseCategory(expenseCategoryName, expenseCategoryTotal, expenseCategoryId);
+        int expenseAccountId = rdr.GetInt32(3);
+        ExpenseCategory newExpenseCategory = new ExpenseCategory(expenseAccountId, expenseCategoryName, expenseCategoryTotal, expenseCategoryId);
         allExpenseCategories.Add(newExpenseCategory);
       }
       conn.Close();
@@ -61,13 +64,15 @@ namespace FinanceCounter.Models
       int expenseCategoryId = 0;
       string expenseCategoryName = "";
       double expenseCategoryTotal = 0;
+      int expenseAccountId = 0;
       while(rdr.Read())
       {
         expenseCategoryId = rdr.GetInt32(0);
         expenseCategoryName = rdr.GetString(1);
         expenseCategoryTotal = rdr.GetDouble(2);
+        expenseAccountId = rdr.GetInt32(3);
       }
-      ExpenseCategory newExpenseCategory = new ExpenseCategory(expenseCategoryName, expenseCategoryTotal, expenseCategoryId);
+      ExpenseCategory newExpenseCategory = new ExpenseCategory(expenseAccountId, expenseCategoryName, expenseCategoryTotal, expenseCategoryId);
       conn.Close();
       if (conn != null)
       {
@@ -81,11 +86,15 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO expenseCategories (name) VALUES (@name);";
+      cmd.CommandText = @"INSERT INTO expenseCategories (name, account_id) VALUES (@name, @accountId);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this._name;
       cmd.Parameters.Add(name);
+      MySqlParameter accountId = new MySqlParameter();
+      accountId.ParameterName = "@accountId";
+      accountId.Value = this._account_id;
+      cmd.Parameters.Add(accountId);
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
       conn.Close();
@@ -97,7 +106,7 @@ namespace FinanceCounter.Models
 
     public List<ExpenseItem> GetExpenseItems()
     {
-      List<ExpenseItem> allExpenseCategoryExpenseItems = new List<ExpenseItem>{};
+      List<ExpenseItem> allExpenseCategoryItems = new List<ExpenseItem>{};
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
@@ -114,14 +123,14 @@ namespace FinanceCounter.Models
         string expenseItemName = rdr.GetString(1);
         double expenseItemPrice = rdr.GetDouble(2);
         ExpenseItem newExpenseItem= new ExpenseItem(expenseItemName, expenseItemPrice, categpryId, expenseItemId);
-        allExpenseCategoryExpenseItems.Add(newExpenseItem);
+        allExpenseCategoryItems.Add(newExpenseItem);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allExpenseCategoryExpenseItems;
+      return allExpenseCategoryItems;
     }
 
     public double GetTotal()
