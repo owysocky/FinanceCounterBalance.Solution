@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.6.5.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 12, 2019 at 03:53 AM
--- Server version: 5.7.23
--- PHP Version: 7.2.10
+-- Generation Time: Mar 12, 2019 at 05:02 PM
+-- Server version: 5.6.35
+-- PHP Version: 7.0.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -25,37 +25,63 @@ USE `finance`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categories`
+-- Table structure for table `accounts`
 --
 
-CREATE TABLE `categories` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `total` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `income`
---
-
-CREATE TABLE `income` (
+CREATE TABLE `accounts` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
   `balance` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `items`
+-- Table structure for table `expenseCategories`
 --
 
-CREATE TABLE `items` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `price` double NOT NULL,
-  `category_id` int(11) NOT NULL
+CREATE TABLE `expenseCategories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(225) DEFAULT NULL,
+  `total` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `expenseItems`
+--
+
+CREATE TABLE `expenseItems` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(225) DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `expenseCategory_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incomeCategories`
+--
+
+CREATE TABLE `incomeCategories` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(225) DEFAULT NULL,
+  `total` double DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `incomeItems`
+--
+
+CREATE TABLE `incomeItems` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(225) DEFAULT NULL,
+  `price` double DEFAULT NULL,
+  `incomeCategory_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -63,46 +89,69 @@ CREATE TABLE `items` (
 --
 
 --
--- Indexes for table `categories`
+-- Indexes for table `accounts`
 --
-ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `income`
---
-ALTER TABLE `income`
+ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indexes for table `items`
+-- Indexes for table `expenseCategories`
 --
-ALTER TABLE `items`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `expenseCategories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `expenseItems`
+--
+ALTER TABLE `expenseItems`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `incomeCategories`
+--
+ALTER TABLE `incomeCategories`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
+
+--
+-- Indexes for table `incomeItems`
+--
+ALTER TABLE `incomeItems`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `categories`
+-- AUTO_INCREMENT for table `accounts`
 --
-ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `income`
---
-ALTER TABLE `income`
+ALTER TABLE `accounts`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
 --
--- AUTO_INCREMENT for table `items`
+-- AUTO_INCREMENT for table `expenseCategories`
 --
-ALTER TABLE `items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
+ALTER TABLE `expenseCategories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `expenseItems`
+--
+ALTER TABLE `expenseItems`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `incomeCategories`
+--
+ALTER TABLE `incomeCategories`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `incomeItems`
+--
+ALTER TABLE `incomeItems`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
