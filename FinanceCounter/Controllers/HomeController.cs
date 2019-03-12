@@ -12,5 +12,17 @@ namespace FinanceCounter.Controllers
         return View();
       }
 
+      [HttpGet("/home/aboutus")]
+      public ActionResult AboutUs()
+      {
+        return View();
+      }
+
+      [HttpGet("/home/contact")]
+      public ActionResult Contact()
+      {
+        return View();
+      }
+
     }
 }
