@@ -1,0 +1,91 @@
+@{
+  Layout = "_Layout";
+}
+<div class="wrapper">
+    <!-- Sidebar  -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Budget App</h3>
+        </div>
+
+        <ul class="list-unstyled components">
+            <p>Welcome, Kenny</p>
+            <li class="active">
+                <a href="/">Home</a>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Accounts</a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a href="/accounts">View All Accounts</a>
+                    </li>
+                    <li>
+                        <a href="/accounts/new">Add Account</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="/home/aboutus">About Us</a>
+            </li>
+            <li>
+                <a href="/home/contact">Contact</a>
+            </li>
+        </ul>
+
+        <ul class="list-unstyled CTAs">
+            <li>
+                <a href="https://github.com/owysocky/FinanceCounter.Solution/tree/master" class="download">Source Code</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div id="content">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+
+            <button type="button" id="sidebarCollapse" class="btn togglebtn">
+                <i class="fas fa-align-left"></i>
+                <span class="glyphicon glyphicon-th-list"></span>
+            </button>
+        </div>
+    </nav>
+    <div id="incomeIndex">
+    <h2>Income in @Model["account"].GetName()</h2>
+    @if (@Model["incomeCategory"].Count != 0)
+    {
+    <ol>
+    @foreach (var income in @Model["incomeCategory"])
+    {
+      <li><a href='/accounts/@Model["account"].GetId()/income/@income.GetId()'>@income.GetName() - $@income.GetTotal()</a></li>
+    }
+    </ol>
+    }
+    @if (@Model["incomeCategory"].Count == 0)
+    {
+    <h3>You have no income inputted yet.</h3>
+    <a href="/accounts/@Model["account"].GetId()/income/new"><button class="addbtn">
+    Add a new income</button></a>
+    }
+    <br><br>
+    <p><a href="/accounts/@Model["account"].GetId()">Previous Page</a></p>
+    <p><a href="/">Back home</a></p>
+    </div>
+    <div class="line"></div>
+    </div>
+</div>
+
+
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
