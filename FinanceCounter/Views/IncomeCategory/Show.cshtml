@@ -49,35 +49,16 @@
             </button>
         </div>
     </nav>
-    <div id="accountShow">
-      <h2>Details of @Model["account"].GetName()</h2>
-
-      <h4><strong>Account Name :</strong> @Model["account"].GetName()</h4>
-      <h4><strong>Account Balance :</strong> $@Model["account"].GetBalance()</h4>
-      <br>
-      <h4>Income(s):</h4>
-      <ol>
-      @foreach (var income in @Model["incomeCategories"])
-      {
-        <li><a href="/accounts/@Model["account"].GetId()/income/@income.GetId()">@income.GetName() - $@income.GetTotal()</a></li>
-      }
-      </ol>
-      <a href='/accounts/@Model["account"].GetId()/income/new'><button class="addbtn">
-      Add Income</button></a>
-      <br><br><br>
-
-      <a href='/accounts/@Model["account"].GetId()/edit'><button class="addbtn">
-      Edit this account</button></a>
-
-      <a href='/accounts/new'><button class="addbtn">
-      Add a new account</button></a>
-      <br><br>
-      <form action="/accounts/@Model["account"].GetId()/delete" method="post">
-        <button type="submit" class="addbtn">Delete this account</button>
-      </form>
+    <div id="incomeShow">
+    <h2>Details of @Model["newIncomeCategory"].GetName() in @Model["account"].GetName()</h2>
+    <h3>Income Amount: $@Model["newIncomeCategory"].GetTotal()</h3>
+    <br>
+    <form action="/accounts/@Model["account"].GetId()/income/@Model["newIncomeCategory"].GetId()/delete" method="post">
+      <button type="submit" class="addbtn">Delete this income</button>
+    </form>
+    <div class="line"></div>
     </div>
-      <div class="line"></div>
-    </div>
+
 </div>
 
 
