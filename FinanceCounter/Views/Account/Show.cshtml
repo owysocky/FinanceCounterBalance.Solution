@@ -49,27 +49,25 @@
             </button>
         </div>
     </nav>
-    <div id="accountIndex">
-    <h2>Accounts List</h2>
-      @if (Model.Count != 0)
-      {
-          <ul>
-          @foreach (var account in Model)
-          {
-              <li><a href="/accounts/@account.GetId()">@account.GetName()</a></li>
-          }
-          </ul>
-          <form action="/accounts/deleteall" method="post">
-            <button type="submit" class="addbtn">Delete all account(s)</button>
-          </form><br><br>
-      }
-      @if (Model.Count == 0)
-      {
-          <p>You have no accounts yet, please add a new account</p>
-      }
-      <a href="/accounts/new"><button class="addbtn">Add a new account</button></a>
+    <div id="accountShow">
+      <h2>Details of @Model["account"].GetName()</h2>
+
+      <h4><strong>Account Name :</strong> @Model["account"].GetName()</h4>
+      <h4><strong>Account Balance :</strong> @Model["account"].GetBalance()</h4>
+
+      <br><br><br>
+
+      <a href='/accounts/@Model["account"].GetId()/edit'><button class="addbtn">
+      Edit this account</button></a>
+
+      <a href='/accounts/new'><button class="addbtn">
+      Add a new account</button></a>
+      <br><br>
+      <form action="/accounts/@Model["account"].GetId()/delete" method="post">
+        <button type="submit" class="addbtn">Delete this account</button>
+      </form>
     </div>
-    <div class="line"></div>
+      <div class="line"></div>
     </div>
 </div>
 

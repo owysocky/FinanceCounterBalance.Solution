@@ -25,7 +25,7 @@ namespace FinanceCounter.Models
     public int GetId(){return _id;}
 
     public void SetName(string newName){_name = newName;}
-    public void SetTotal(string newTotal){_total = newTotal;}
+    public void SetTotal(double newTotal){_total = newTotal;}
 
     public static List<IncomeCategory> GetAll()
     {
@@ -182,7 +182,7 @@ namespace FinanceCounter.Models
         IncomeCategory newIncomeCategory = (IncomeCategory) otherIncomeCategory;
         bool idEquality = this.GetId().Equals(newIncomeCategory.GetId());
         bool nameEquality = this.GetName().Equals(newIncomeCategory.GetName());
-        bool totalEquality = this.GetTotal().Equals(newExpenseCategory.GetTotal());
+        bool totalEquality = this.GetTotal().Equals(newIncomeCategory.GetTotal());
         return (idEquality && nameEquality && totalEquality);
       }
     }

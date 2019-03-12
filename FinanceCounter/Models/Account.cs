@@ -10,7 +10,7 @@ namespace FinanceCounter.Models
     private string _name;
     private double _balance;
 
-    public Account(string name, double balance = 0, int id = 0)
+    public Account(string name, double balance = 0.00, int id = 0)
     {
       _id = id;
       _name = name;
@@ -19,6 +19,7 @@ namespace FinanceCounter.Models
 
     public string GetName(){return _name;}
     public int GetId(){return _id;}
+
     public void SetName(string newName){_name = newName;}
 
     public void Save()
@@ -26,11 +27,15 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO accounts (name) VALUES (@name);";
+      cmd.CommandText = @"INSERT INTO accounts (name, balance) VALUES (@name, @balance);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this._name;
       cmd.Parameters.Add(name);
+      MySqlParameter balance = new MySqlParameter();
+      balance.ParameterName = "@balance";
+      balance.Value = this._balance;
+      cmd.Parameters.Add(balance);
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
       conn.Close();
@@ -52,7 +57,7 @@ namespace FinanceCounter.Models
       {
         int accountId = rdr.GetInt32(0);
         string accountName = rdr.GetString(1);
-        double accountBalance = rdr.GerDouble(2);
+        double accountBalance = rdr.GetDouble(2);
         Account newAccount = new Account(accountName, accountBalance, accountId);
         allAccount.Add(newAccount);
       }
@@ -82,7 +87,7 @@ namespace FinanceCounter.Models
       {
         accountId = rdr.GetInt32(0);
         accountName = rdr.GetString(1);
-        accountBalance = rdr.GerDouble(2);
+        accountBalance = rdr.GetDouble(2);
       }
       Account newAccount = new Account(accountName, accountBalance, accountId);
       conn.Close();
@@ -99,7 +104,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
      conn.Open();
      var cmd = conn.CreateCommand() as MySqlCommand;
-     cmd.CommandText = "SELECT * FROM incomeCategory WHERE account_id = @account_id;";
+     cmd.CommandText = "SELECT * FROM incomeCategories WHERE account_id = @account_id;";
      MySqlParameter accountId = new MySqlParameter();
       accountId.ParameterName = "@account_id";
       accountId.Value = this._id;
@@ -128,7 +133,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
      conn.Open();
      var cmd = conn.CreateCommand() as MySqlCommand;
-     cmd.CommandText = "SELECT * FROM expenseCategory WHERE account_id = @account_id;";
+     cmd.CommandText = "SELECT * FROM expenseCategories WHERE account_id = @account_id;";
      MySqlParameter accountId = new MySqlParameter();
       accountId.ParameterName = "@account_id";
       accountId.Value = this._id;
@@ -219,7 +224,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM accounts WHERE id = @searchId; DELETE FROM expenseCategories WHERE account_id = @searchId; DELETE FROM incomeCategories WHERE account_id = @searchId; DELETE FROM expenseItems WHERE expenseCategory_id IN (SELECT id FROM expenseCategories WHERE account_id = @searchId;)";
+      cmd.CommandText = @"DELETE FROM accounts WHERE id = @searchId; DELETE FROM expenseCategories WHERE account_id = @searchId; DELETE FROM incomeCategories WHERE account_id = @searchId; DELETE FROM expenseItems WHERE expenseCategory_id IN (SELECT id FROM expenseCategories WHERE account_id = @searchId);";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
