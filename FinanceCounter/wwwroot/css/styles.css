@@ -154,6 +154,17 @@ a.article:hover {
   color: white;
 }
 
+.addbtn {
+  background: #92ddc8;
+  color: white;
+   border-radius: 5px;
+   border: 0px;
+}
+
+#accountIndex a {
+  text-decoration: underline;
+  color: blue;
+}
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */

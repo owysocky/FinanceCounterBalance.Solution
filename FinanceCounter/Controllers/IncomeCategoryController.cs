@@ -17,6 +17,7 @@ namespace FinanceCounter.Controllers
 
     [HttpPost("accounts/{accountId}/income/categories/{id}")]
     public ActionResult Create( int accountId, string incomeCategoryName, double total, int id)
+
     {
       IncomeCategory newIncomeCategory = new IncomeCategory(accountId, incomeCategoryName, total);
       newIncomeCategory.Save();
