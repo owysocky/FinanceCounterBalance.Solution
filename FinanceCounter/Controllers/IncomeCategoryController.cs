@@ -8,13 +8,7 @@ namespace FinanceCounter.Controllers
 {
   public class IncomeCategoryController : Controller
   {
-    [HttpGet("accounts/accountId/income/categories")]
-    public ActionResult Index(int accountId)
-    {
 
-      List<IncomeCategory> allIncomeCategories = IncomeCategory.GetAll();
-      return View(allIncomeCategories);
-    }
 
     [HttpGet("/income/categories/new")]
     public ActionResult New()
@@ -22,10 +16,10 @@ namespace FinanceCounter.Controllers
       return View();
     }
 
-    [HttpPost("/income/categories")]
-    public ActionResult Create(string incomeCategoryName, double total)
+    [HttpPost("accounts/{accountId}/income/categories")]
+    public ActionResult Create( int accountId, string incomeCategoryName, double total)
     {
-      IncomeCategory newIncomeCategory = new IncomeCategory(incomeCategoryName, total);
+      IncomeCategory newIncomeCategory = new IncomeCategory(accountId, incomeCategoryName, total);
       newIncomeCategory.Save();
       List<IncomeCategory> allIncomeCategories = IncomeCategory.GetAll();
       return View("Index", allIncomeCategories);
@@ -34,27 +28,23 @@ namespace FinanceCounter.Controllers
     [HttpGet("/income/categories/{id}")]
     public ActionResult Show(int id)
     {
-      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id)
+      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id);
       return View(newIncomeCategory);
     }
 
     [HttpGet("/income/categories/{id}/edit")]
-    public ActionResult Edit(int categpryId )
+    public ActionResult Edit(int id)
     {
-      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id)
+      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id);
       return View(newIncomeCategory);
     }
 
     [HttpPost("/income/categories/{id}/update")]
-    public ActionResult Update(string newName, int id, double newIncome )
+    public ActionResult Update(string newName, double newIncome, int id)
     {
-      Ca
-      client.Edit(newName, newPhone);
-      Dictionary<string, object> model = new Dictionary<string, object>();
-      Stylist stylist = Stylist.Find(stylistId);
-      model.Add("stylist", stylist);
-      model.Add("client", client);
-      return View("Show", model);
+      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id);
+      newIncomeCategory.Edit(newName, newTotal);
+      return View("Show", newIncomeCategory);
     }
 
   }
