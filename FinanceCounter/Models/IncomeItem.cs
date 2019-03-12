@@ -3,17 +3,17 @@ using MySql.Data.MySqlClient;
 
 namespace FinanceCounter.Models
 {
-  public class Item
+  public class IncomeItem
   {
     private string _name;
     private int _id;
     private double _price;
-    private int _categoryId;
+    private int _incomeCategoryId;
 
-    public Item (string name, double price, int categoryId, int id = 0)
+    public IncomeItem (string name, double price, int incomeCategoryId, int id = 0)
     {
       _name = name;
-      _categoryId = categoryId;
+      _incomeCategoryId = incomeCategoryId;
       _id = id;
       _price = price;
     }
@@ -21,65 +21,65 @@ namespace FinanceCounter.Models
     public string GetName(){return _name;}
     public double GetPrice(){return _price;}
     public int GetId(){ return _id;}
-    public int GetCategoryId(){ return _categoryId;}
+    public int GetIncomeCategoryId(){ return _incomeCategoryId;}
 
     public void SetName(string newName){ _name = newName;}
     public void SetPrice(double newPrice){ _price = newPrice;}
 
-    public static List<Item> GetAll()
+    public static List<IncomeItem> GetAll()
     {
-      List<Item> allItems = new List<Item> {};
+      List<IncomeItem> allIncomeItems = new List<IncomeItem> {};
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM items;";
+      cmd.CommandText = @"SELECT * FROM incomeItems;";
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        int itemId = rdr.GetInt32(0);
-        string itemName = rdr.GetString(1);
-        double itemPrice = rdr.GetDouble(2);
-        int itemCategoryId = rdr.GetInt32(3);
-        Item newItem = new Item(itemName, itemPrice, itemCategoryId, itemId);
-        allItems.Add(newItem);
+        int incomeItemId = rdr.GetInt32(0);
+        string incomeItemName = rdr.GetString(1);
+        double incomeItemPrice = rdr.GetDouble(2);
+        int incomeItemCategoryId = rdr.GetInt32(3);
+        IncomeItem newIncomeItem = new IncomeItem(incomeItemName, incomeItemPrice, incomeItemCategoryId, incomeItemId);
+        allIncomeItems.Add(newIncomeItem);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allItems;
+      return allIncomeItems;
     }
 
-    public static Item Find(int id)
+    public static IncomeItem Find(int id)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM items WHERE id = (@searchId);";
+      cmd.CommandText = @"SELECT * FROM incomeItems WHERE id = (@searchId);";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = id;
       cmd.Parameters.Add(searchId);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
-      int itemId = 0;
-      string itemName = "";
-      int itemCategoryId = 0;
-      double itemPrice = 0;
+      int incomeItemId = 0;
+      string incomeItemName = "";
+      int incomeItemCategoryId = 0;
+      double incomeItemPrice = 0;
       while(rdr.Read())
       {
-        itemId = rdr.GetInt32(0);
-        itemName = rdr.GetString(1);
-        itemPrice = rdr.GetDouble(2);
-        itemCategoryId = rdr.GetInt32(3);
+        incomeItemId = rdr.GetInt32(0);
+        incomeItemName = rdr.GetString(1);
+        incomeItemPrice = rdr.GetDouble(2);
+        incomeItemCategoryId = rdr.GetInt32(3);
       }
-      Item newItem = new Item(itemName, itemPrice, itemCategoryId, itemId);
+      IncomeItem newIncomeItem = new IncomeItem(incomeItemName, incomeItemPrice, incomeItemCategoryId, incomeItemId);
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return newItem;
+      return newIncomeItem;
     }
 
     public void Save()
@@ -87,15 +87,15 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO items (name, price, category_id) VALUES (@name, @price, @category_id);";
+      cmd.CommandText = @"INSERT INTO incomeItems (name, price, incomeCategory_id) VALUES (@name, @price, @incomeCategory_id);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this._name;
       cmd.Parameters.Add(name);
-      MySqlParameter categoryId = new MySqlParameter();
-      categoryId.ParameterName = "@category_id";
-      categoryId.Value = this._categoryId;
-      cmd.Parameters.Add(categoryId);
+      MySqlParameter incomeCategoryId = new MySqlParameter();
+      incomeCategoryId.ParameterName = "@incomeCategory_id";
+      incomeCategoryId.Value = this._incomeCategoryId;
+      cmd.Parameters.Add(incomeCategoryId);
       MySqlParameter price = new MySqlParameter();
       price.ParameterName = "@price";
       price.Value = this._price;
@@ -114,7 +114,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"UPDATE items SET name = @newName WHERE id = @searchId;";
+      cmd.CommandText = @"UPDATE incomeItems SET name = @newName WHERE id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -137,7 +137,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"UPDATE items SET name = @newName, price = newPrice WHERE id = @searchId;";
+      cmd.CommandText = @"UPDATE incomeItems SET name = @newName, price = newPrice WHERE id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -165,7 +165,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM items WHERE id = @searchId;";
+      cmd.CommandText = @"DELETE FROM incomeItems WHERE id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -180,19 +180,19 @@ namespace FinanceCounter.Models
 
 // ====================== TESTS =================================
 
-    public override bool Equals(System.Object otherItem)
+    public override bool Equals(System.Object otherIncomeItem)
     {
-      if (!(otherItem is Item))
+      if (!(otherIncomeItem is IncomeItem))
       {
         return false;
       }
       else
       {
-         Item newItem = (Item) otherItem;
-         bool idEquality = this.GetId() == newItem.GetId();
-         bool nameEquality = this.GetName() == newItem.GetName();
-         bool categoryEquality = this.GetCategoryId() == newItem.GetCategoryId();
-         return (idEquality && nameEquality && categoryEquality);
+         IncomeItem newIncomeItem = (IncomeItem) otherIncomeItem;
+         bool idEquality = this.GetId() == newIncomeItem.GetId();
+         bool nameEquality = this.GetName() == newIncomeItem.GetName();
+         bool incomeCategoryEquality = this.GetIncomeCategoryId() == newIncomeItem.GetIncomeCategoryId();
+         return (idEquality && nameEquality && incomeCategoryEquality);
        }
     }
 
@@ -206,7 +206,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM items;";
+      cmd.CommandText = @"DELETE FROM incomeItems;";
       cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)
