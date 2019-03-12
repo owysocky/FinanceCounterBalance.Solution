@@ -24,6 +24,7 @@ namespace FinanceCounter.Models
     public int GetCategoryId(){ return _categoryId;}
 
     public void SetName(string newName){ _name = newName;}
+    public void SetPrice(double newPrice){ _price = newPrice;}
 
     public static List<Item> GetAll()
     {
@@ -124,6 +125,52 @@ namespace FinanceCounter.Models
       cmd.Parameters.Add(name);
       cmd.ExecuteNonQuery();
       _name = newName;
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public void Edit(string newName, double newPrice)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"UPDATE items SET name = @newName, price = newPrice WHERE id = @searchId;";
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = _id;
+      cmd.Parameters.Add(searchId);
+      MySqlParameter name = new MySqlParameter();
+      name.ParameterName = "@newName";
+      name.Value = newName;
+      cmd.Parameters.Add(name);
+      MySqlParameter price = new MySqlParameter();
+      price.ParameterName = "@newPrice";
+      price.Value = newPrice;
+      cmd.Parameters.Add(price);
+      cmd.ExecuteNonQuery();
+      _name = newName;
+      _price = newPrice;
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
+    public void Delete()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM items WHERE id = @searchId;";
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = _id;
+      cmd.Parameters.Add(searchId);
+      cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)
       {
