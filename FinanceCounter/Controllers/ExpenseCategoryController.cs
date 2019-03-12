@@ -35,10 +35,10 @@ namespace FinanceCounter.Controllers
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
       ExpenseCategory selectedExpenseCategory = ExpenseCategory.Find(id);
-      List<ExpenseItem> expenseCategoryExpenseItems = selectedExpenseCategory.GetExpenseItems();
+      List<ExpenseItem> expenseCategoryItems = selectedExpenseCategory.GetExpenseItems();
       List<ExpenseItem> allExpenseItems = ExpenseItem.GetAll();
       model.Add("expenseCategory", selectedExpenseCategory);
-      model.Add("expenseCategoryExpenseItems", expenseCategoryExpenseItems);
+      model.Add("expenseCategoryItems", expenseCategoryItems);
       model.Add("allExpenseItems", allExpenseItems);
       return View(model);
     }
@@ -50,11 +50,11 @@ namespace FinanceCounter.Controllers
     //   ExpenseCategory selectedExpenseCategory = ExpenseCategory.Find(expenseCategoryId);
     //   ExpenseItem newExpenseItem = new ExpenseItem(name, price, expenseCategoryId);
     //   newExpenseItem.Save();
-    //   List<ExpenseItem> expenseCategoryExpenseItems = selectedExpenseCategory.GetExpenseItems();
+    //   List<ExpenseItem> expenseCategoryItems = selectedExpenseCategory.GetExpenseItems();
     //   List<ExpenseItem> allExpenseItems = ExpenseItem.GetAll();
-    //   List<ExpenseItem> expenseCategoryExpenseItems = selectedExpenseCategory.GetExpenseItems();
-    //   model.Add("exitems", expenseCategoryExpenseItems);
-    //   model.Add("expenseCategoryExpenseItems", expenseCategoryExpenseItems);
+    //   List<ExpenseItem> expenseCategoryItems = selectedExpenseCategory.GetExpenseItems();
+    //   model.Add("exitems", expenseCategoryItems);
+    //   model.Add("expenseCategoryItems", expenseCategoryItems);
     //   model.Add("expenseCategory", selectedExpenseCategory);
     //   model.Add("allExpenseItems", allExpenseItems);
     //   return View("Show", model);

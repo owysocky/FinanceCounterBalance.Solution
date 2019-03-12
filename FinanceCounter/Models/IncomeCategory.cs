@@ -95,13 +95,13 @@ namespace FinanceCounter.Models
       }
     }
 
-    public List<ExpenseItem> GetExpenseItems()
+    public List<IncomeItem> GetIncomeItems()
     {
-      List<ExpenseItem> allIncomeCategoryExpenseItems = new List<ExpenseItem>{};
+      List<IncomeItem> allIncomeCategoryIncomeItems = new List<IncomeItem>{};
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT * FROM expenseItems WHERE incomeCategory_id = @incomeCategory_id;";
+      cmd.CommandText = "SELECT * FROM incomeItems WHERE incomeCategory_id = @incomeCategory_id;";
       MySqlParameter incomeCategoryId = new MySqlParameter();
       incomeCategoryId.ParameterName = "@incomeCategory_id";
       incomeCategoryId.Value = this._id;
@@ -109,19 +109,19 @@ namespace FinanceCounter.Models
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        int expenseItemId = rdr.GetInt32(0);
+        int incomeItemId = rdr.GetInt32(0);
         int categpryId = rdr.GetInt32(3);
-        string expenseItemName = rdr.GetString(1);
-        double expenseItemPrice = rdr.GetDouble(2);
-        ExpenseItem newExpenseItem= new ExpenseItem(expenseItemName, expenseItemPrice, categpryId, expenseItemId);
-        allIncomeCategoryExpenseItems.Add(newExpenseItem);
+        string incomeItemName = rdr.GetString(1);
+        double incomeItemPrice = rdr.GetDouble(2);
+        IncomeItem newIncomeItem= new IncomeItem(incomeItemName, incomeItemPrice, categpryId, incomeItemId);
+        allIncomeCategoryIncomeItems.Add(newIncomeItem);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allIncomeCategoryExpenseItems;
+      return allIncomeCategoryIncomeItems;
     }
 
     public double GetTotal()
@@ -130,12 +130,12 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT price FROM expenseItems;";
+      cmd.CommandText = "SELECT price FROM incomeItems;";
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        double expenseItemPrice = rdr.GetDouble(0);
-        total += expenseItemPrice;
+        double incomeItemPrice = rdr.GetDouble(0);
+        total += incomeItemPrice;
       }
       // _total = total;
       return total;
@@ -146,7 +146,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM incomeCategories WHERE id = @searchId; DELETE FROM expenseItems WHERE incomeCategory_id = @searchId;";
+      cmd.CommandText = @"DELETE FROM incomeCategories WHERE id = @searchId; DELETE FROM incomeItems WHERE incomeCategory_id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -182,12 +182,12 @@ namespace FinanceCounter.Models
       }
     }
 
-    public void DeleteAllExpenseItems()
+    public void DeleteAllIncomeItems()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM expenseItems WHERE incomeCategories_id = @searchId;";
+      cmd.CommandText = @"DELETE FROM incomeItems WHERE incomeCategories_id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -205,7 +205,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE  FROM incomeCategories; DELETE FROM expenseItems;";
+      cmd.CommandText = @"DELETE  FROM incomeCategories; DELETE FROM incomeItems;";
       cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)
