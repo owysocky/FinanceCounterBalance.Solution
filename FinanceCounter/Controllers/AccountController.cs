@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using FinanceCounter.Models;
 
 namespace FinanceCounter.Controllers
@@ -84,6 +85,7 @@ namespace FinanceCounter.Controllers
        model.Add("incomeCategories", incomeCategories);
        return View("Show", model);
      }
+
 
 
 

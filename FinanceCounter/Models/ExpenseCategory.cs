@@ -139,14 +139,18 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT price FROM expenseItems;";
+      cmd.CommandText = "SELECT price FROM expenseItems WHERE expenseCategory_id = @searchId;";
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = _id;
+      cmd.Parameters.Add(searchId);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
         double expenseItemPrice = rdr.GetDouble(0);
         total += expenseItemPrice;
       }
-      //_total = total;
+      this._total = total;
       return total;
     }
 

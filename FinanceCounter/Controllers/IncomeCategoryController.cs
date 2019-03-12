@@ -15,13 +15,14 @@ namespace FinanceCounter.Controllers
       return View();
     }
 
-    [HttpPost("accounts/{accountId}/income/categories")]
-    public ActionResult Create( int accountId, string incomeCategoryName, double total)
+    [HttpPost("accounts/{accountId}/income/categories/{id}")]
+    public ActionResult Create( int accountId, string incomeCategoryName, double total, int id)
+
     {
       IncomeCategory newIncomeCategory = new IncomeCategory(accountId, incomeCategoryName, total);
       newIncomeCategory.Save();
-      List<IncomeCategory> allIncomeCategories = IncomeCategory.GetAll();
-      return View("Index", allIncomeCategories);
+      IncomeCategory newIncomeCategory = IncomeCategory.Find(id);
+      return View("Show", newIncomeCategory);
     }
 
     [HttpGet("/income/categories/{id}")]

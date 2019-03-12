@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Mar 12, 2019 at 05:03 PM
+-- Generation Time: Mar 12, 2019 at 10:28 PM
 -- Server version: 5.6.35
 -- PHP Version: 7.0.15
 
@@ -17,10 +17,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `finance_test`
+-- Database: `finance`
 --
-CREATE DATABASE IF NOT EXISTS `finance_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `finance_test`;
+CREATE DATABASE IF NOT EXISTS `finance` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `finance`;
 
 -- --------------------------------------------------------
 
@@ -43,7 +43,8 @@ CREATE TABLE `accounts` (
 CREATE TABLE `expenseCategories` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(225) DEFAULT NULL,
-  `total` double DEFAULT NULL
+  `total` double DEFAULT NULL,
+  `account_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -68,20 +69,8 @@ CREATE TABLE `expenseItems` (
 CREATE TABLE `incomeCategories` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name` varchar(225) DEFAULT NULL,
-  `total` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `incomeItems`
---
-
-CREATE TABLE `incomeItems` (
-  `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(225) DEFAULT NULL,
-  `price` double DEFAULT NULL,
-  `incomeCategory_id` int(11) DEFAULT NULL
+  `total` double DEFAULT NULL,
+  `account_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -117,13 +106,6 @@ ALTER TABLE `incomeCategories`
   ADD UNIQUE KEY `id` (`id`);
 
 --
--- Indexes for table `incomeItems`
---
-ALTER TABLE `incomeItems`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id` (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -146,11 +128,6 @@ ALTER TABLE `expenseItems`
 -- AUTO_INCREMENT for table `incomeCategories`
 --
 ALTER TABLE `incomeCategories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `incomeItems`
---
-ALTER TABLE `incomeItems`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
