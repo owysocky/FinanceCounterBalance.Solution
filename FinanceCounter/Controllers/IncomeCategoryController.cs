@@ -8,20 +8,21 @@ namespace FinanceCounter.Controllers
 {
   public class IncomeCategoryController : Controller
   {
-    [HttpGet("/incategories")]
-    public ActionResult Index()
+    [HttpGet("accounts/accountId/income/categories")]
+    public ActionResult Index(int accountId)
     {
+
       List<IncomeCategory> allIncomeCategories = IncomeCategory.GetAll();
       return View(allIncomeCategories);
     }
 
-    [HttpGet("/incategories/new")]
+    [HttpGet("/income/categories/new")]
     public ActionResult New()
     {
       return View();
     }
 
-    [HttpPost("/incategories")]
+    [HttpPost("/income/categories")]
     public ActionResult Create(string incomeCategoryName, double total)
     {
       IncomeCategory newIncomeCategory = new IncomeCategory(incomeCategoryName, total);
@@ -30,45 +31,31 @@ namespace FinanceCounter.Controllers
       return View("Index", allIncomeCategories);
     }
 
-    [HttpGet("/incategories/{id}")]
+    [HttpGet("/income/categories/{id}")]
     public ActionResult Show(int id)
     {
-      Dictionary<string, object> model = new Dictionary<string, object>();
-      IncomeCategory selectedIncomeCategory = IncomeCategory.Find(id);
-      List<IncomeItem> incomeCategoryItems = selectedIncomeCategory.GetIncomeItems();
-      List<IncomeItem> allIncomeItems = IncomeItem.GetAll();
-      model.Add("incomeCategory", selectedIncomeCategory);
-      model.Add("incomeCategoryItems", incomeCategoryItems);
-      model.Add("allIncomeItems", allIncomeItems);
-      return View(model);
+      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id)
+      return View(newIncomeCategory);
     }
 
-    // [HttpPost("/incategories/{incomeCategoryId}/initems")]
-    // public ActionResult Create(string name, double price, int incomeCategoryId,)
-    // {
-    //   Dictionary<string, object> model = new Dictionary<string, object>();
-    //   IncomeCategory selectedIncomeCategory = IncomeCategory.Find(incomeCategoryId);
-    //   IncomeItem newIncomeItem = new IncomeItem(name, price, incomeCategoryId);
-    //   newIncomeItem.Save();
-    //   List<IncomeItem> incomeCategoryItems = selectedIncomeCategory.GetIncomeItems();
-    //   List<IncomeItem> allIncomeItems = IncomeItem.GetAll();
-    //   List<IncomeItem> incomeCategoryItems = selectedIncomeCategory.GetIncomeItems();
-    //   model.Add("initems", incomeCategoryItems);
-    //   model.Add("incomeCategoryItems", incomeCategoryItems);
-    //   model.Add("incomeCategory", selectedIncomeCategory);
-    //   model.Add("allIncomeItems", allIncomeItems);
-    //   return View("Show", model);
-    // }
-    //
-    // [HttpPost("/incategories/{incomeCategoryId}/initems/new")]
-    // public ActionResult AddIncomeItem(int incomeCategoryId, int exitemId)
-    // {
-    //   IncomeCategory incomeCategory = IncomeCategory.Find(incomeCategoryId);
-    //   IncomeItem exitem = IncomeItem.Find(exitemId);
-    //   incomeCategory.AddIncomeItem(exitem);
-    //   return RedirectToAction("Show",  new { id = incomeCategoryId });
-    // }
+    [HttpGet("/income/categories/{id}/edit")]
+    public ActionResult Edit(int categpryId )
+    {
+      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id)
+      return View(newIncomeCategory);
+    }
 
+    [HttpPost("/income/categories/{id}/update")]
+    public ActionResult Update(string newName, int id, double newIncome )
+    {
+      Ca
+      client.Edit(newName, newPhone);
+      Dictionary<string, object> model = new Dictionary<string, object>();
+      Stylist stylist = Stylist.Find(stylistId);
+      model.Add("stylist", stylist);
+      model.Add("client", client);
+      return View("Show", model);
+    }
 
   }
 }

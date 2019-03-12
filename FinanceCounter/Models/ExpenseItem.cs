@@ -188,11 +188,12 @@ namespace FinanceCounter.Models
       }
       else
       {
-         ExpenseItem newExpenseItem = (ExpenseItem) otherExpenseItem;
-         bool idEquality = this.GetId() == newExpenseItem.GetId();
-         bool nameEquality = this.GetName() == newExpenseItem.GetName();
-         bool expenseCategoryEquality = this.GetExpenseCategoryId() == newExpenseItem.GetExpenseCategoryId();
-         return (idEquality && nameEquality && expenseCategoryEquality);
+        ExpenseItem newExpenseItem = (ExpenseItem) otherExpenseItem;
+        bool idEquality = this.GetId() == newExpenseItem.GetId();
+        bool nameEquality = this.GetName() == newExpenseItem.GetName();
+        bool expenseCategoryEquality = this.GetExpenseCategoryId() == newExpenseItem.GetExpenseCategoryId();
+        bool priceEquality = this.GetPrice().Equals(newExpenseCategory.GetPrice());
+        return (idEquality && nameEquality && expenseCategoryEquality && priceEquality);
        }
     }
 

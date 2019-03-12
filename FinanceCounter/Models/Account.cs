@@ -150,14 +150,14 @@ namespace FinanceCounter.Models
       }
       return allExpenseCategory;
     }
-
+//====================== For Balance >>>>>>>>> ===============
     public double GetTotalIncome()
     {
       double totalIncome = 0;
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT total FROM accounts;";
+      cmd.CommandText = "SELECT total FROM incomeCategories;";
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
@@ -189,6 +189,7 @@ namespace FinanceCounter.Models
       _balance = balance;
       return balance;
     }
+//====================== <<<<<<< For Balance ===============
 
     public void Edit(string newName)
     {
@@ -218,7 +219,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM accounts WHERE id = @searchId; DELETE FROM expenseCategories WHERE account_id = @searchId; DELETE FROM incomeCategories WHERE account_id = @searchId; DELETE FROM incomeItems WHERE incomeCategory_id IN (SELECT id FROM incomeCategories WHERE account_id = @searchId; DELETE FROM expenseItems WHERE expenseCategory_id IN (SELECT id FROM expenseCategories WHERE account_id = @searchId;)";
+      cmd.CommandText = @"DELETE FROM accounts WHERE id = @searchId; DELETE FROM expenseCategories WHERE account_id = @searchId; DELETE FROM incomeCategories WHERE account_id = @searchId; DELETE FROM expenseItems WHERE expenseCategory_id IN (SELECT id FROM expenseCategories WHERE account_id = @searchId;)";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -236,7 +237,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE  FROM accounts; DELETE FROM incomeCategories; DELETE FROM expenseCategories; DELETE  FROM incomeItems; DELETE  FROM expenseItems;";
+      cmd.CommandText = @"DELETE FROM accounts; DELETE FROM incomeCategories; DELETE FROM expenseCategories; DELETE  FROM expenseItems;";
       cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)
