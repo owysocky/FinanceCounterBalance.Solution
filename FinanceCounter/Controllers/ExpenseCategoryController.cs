@@ -25,22 +25,15 @@ namespace FinanceCounter.Controllers
       return View(model);
     }
 
-    [HttpPost("/expense/categories/{id}/items")]
-    public ActionResult Create(string name, double price, int id,)
+    [HttpPost("accounts/{accountId}/expense/categories")]
+    public ActionResult Create(int accountId, string name)
     {
-      Dictionary<string, object> model = new Dictionary<string, object>();
-      ExpenseCategory selectedExpenseCategory = ExpenseCategory.Find(expenseCategoryId);
-      ExpenseItem newExpenseItem = new ExpenseItem(name, price, expenseCategoryId);
-      newExpenseItem.Save();
-      List<ExpenseItem> expenseCategoryItems = selectedExpenseCategory.GetExpenseItems();
-      List<ExpenseItem> allExpenseItems = ExpenseItem.GetAll();
-      List<ExpenseItem> expenseCategoryItems = selectedExpenseCategory.GetExpenseItems();
-      model.Add("exitems", expenseCategoryItems);
-      model.Add("expenseCategoryItems", expenseCategoryItems);
-      model.Add("expenseCategory", selectedExpenseCategory);
-      model.Add("allExpenseItems", allExpenseItems);
-      return View("Show", model);
+      ExpenseCategory newExpenseCategory = new ExpenseCategory(accountId, name);
+      newExpenseCategory.Save();
+      return RedirectToAction("Show", "Account", new {id = accountId});
     }
+
+
 
     // [HttpPost("/expense/categories/{expenseCategoryId}/items/new")]
     // public ActionResult AddExpenseItem(int expenseCategoryId, int exitemId)
