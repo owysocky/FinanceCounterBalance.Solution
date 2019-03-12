@@ -4,13 +4,13 @@ using MySql.Data.MySqlClient;
 
 namespace FinanceCounter.Models
 {
-  public class ExpenseExpenseCategory
+  public class ExpenseCategory
   {
     private int _id;
     private string _name;
     private double _total;
 
-    public ExpenseExpenseCategory(string name, double total = 0, int id = 0)
+    public ExpenseCategory(string name, double total = 0, int id = 0)
     {
       _name = name;
       _id = id;
@@ -95,13 +95,13 @@ namespace FinanceCounter.Models
       }
     }
 
-    public List<Item> GetItems()
+    public List<ExpenseItem> GetExpenseItems()
     {
-      List<Item> allExpenseCategoryItems = new List<Item>{};
+      List<ExpenseItem> allExpenseCategoryExpenseItems = new List<ExpenseItem>{};
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT * FROM items WHERE expenseCategory_id = @expenseCategory_id;";
+      cmd.CommandText = "SELECT * FROM expenseItems WHERE expenseCategory_id = @expenseCategory_id;";
       MySqlParameter expenseCategoryId = new MySqlParameter();
       expenseCategoryId.ParameterName = "@expenseCategory_id";
       expenseCategoryId.Value = this._id;
@@ -109,19 +109,19 @@ namespace FinanceCounter.Models
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        int itemId = rdr.GetInt32(0);
+        int expenseItemId = rdr.GetInt32(0);
         int categpryId = rdr.GetInt32(3);
-        string itemName = rdr.GetString(1);
-        double itemPrice = rdr.GetDouble(2);
-        Item newItem= new Item(itemName, itemPrice, categpryId, itemId);
-        allExpenseCategoryItems.Add(newItem);
+        string expenseItemName = rdr.GetString(1);
+        double expenseItemPrice = rdr.GetDouble(2);
+        ExpenseItem newExpenseItem= new ExpenseItem(expenseItemName, expenseItemPrice, categpryId, expenseItemId);
+        allExpenseCategoryExpenseItems.Add(newExpenseItem);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allExpenseCategoryItems;
+      return allExpenseCategoryExpenseItems;
     }
 
     public double GetTotal()
@@ -130,12 +130,12 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT price FROM items;";
+      cmd.CommandText = "SELECT price FROM expenseItems;";
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        double itemPrice = rdr.GetDouble(0);
-        total += itemPrice;
+        double expenseItemPrice = rdr.GetDouble(0);
+        total += expenseItemPrice;
       }
       // _total = total;
       return total;
@@ -146,7 +146,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM expenseCategories WHERE id = @searchId; DELETE FROM items WHERE expenseCategory_id = @searchId;";
+      cmd.CommandText = @"DELETE FROM expenseCategories WHERE id = @searchId; DELETE FROM expenseItems WHERE expenseCategory_id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -182,12 +182,12 @@ namespace FinanceCounter.Models
       }
     }
 
-    public void DeleteAllItems()
+    public void DeleteAllExpenseItems()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM items WHERE expenseCategories_id = @searchId;";
+      cmd.CommandText = @"DELETE FROM expenseItems WHERE expenseCategories_id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -205,7 +205,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE  FROM expenseCategories; DELETE FROM items;";
+      cmd.CommandText = @"DELETE  FROM expenseCategories; DELETE FROM expenseItems;";
       cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)

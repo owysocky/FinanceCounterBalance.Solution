@@ -23,9 +23,9 @@ namespace FinanceCounter.Models
 
     public void SetName(string newName){_name = newName;}
 
-    public static List<Category> GetAll()
+    public static List<IncomeCategory> GetAll()
     {
-      List<Category> allCategories = new List<Category> {};
+      List<IncomeCategory> allCategories = new List<IncomeCategory> {};
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
@@ -36,8 +36,8 @@ namespace FinanceCounter.Models
         int incomeCategoryId = rdr.GetInt32(0);
         string incomeCategoryName = rdr.GetString(1);
         double incomeCategoryTotal = rdr.GetDouble(2);
-        Category newCategory = new Category(incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
-        allCategories.Add(newCategory);
+        IncomeCategory newIncomeCategory = new IncomeCategory(incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
+        allCategories.Add(newIncomeCategory);
       }
       conn.Close();
       if (conn != null)
@@ -47,7 +47,7 @@ namespace FinanceCounter.Models
       return allCategories;
     }
 
-    public static Category Find(int id)
+    public static IncomeCategory Find(int id)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
@@ -67,13 +67,13 @@ namespace FinanceCounter.Models
         incomeCategoryName = rdr.GetString(1);
         incomeCategoryTotal = rdr.GetDouble(2);
       }
-      Category newCategory = new Category(incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
+      IncomeCategory newIncomeCategory = new IncomeCategory(incomeCategoryName, incomeCategoryTotal, incomeCategoryId);
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return newCategory;
+      return newIncomeCategory;
     }
 
     public void Save()
@@ -95,13 +95,13 @@ namespace FinanceCounter.Models
       }
     }
 
-    public List<Item> GetItems()
+    public List<ExpenseItem> GetExpenseItems()
     {
-      List<Item> allCategoryItems = new List<Item>{};
+      List<ExpenseItem> allIncomeCategoryExpenseItems = new List<ExpenseItem>{};
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT * FROM items WHERE incomeCategory_id = @incomeCategory_id;";
+      cmd.CommandText = "SELECT * FROM expenseItems WHERE incomeCategory_id = @incomeCategory_id;";
       MySqlParameter incomeCategoryId = new MySqlParameter();
       incomeCategoryId.ParameterName = "@incomeCategory_id";
       incomeCategoryId.Value = this._id;
@@ -109,19 +109,19 @@ namespace FinanceCounter.Models
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        int itemId = rdr.GetInt32(0);
+        int expenseItemId = rdr.GetInt32(0);
         int categpryId = rdr.GetInt32(3);
-        string itemName = rdr.GetString(1);
-        double itemPrice = rdr.GetDouble(2);
-        Item newItem= new Item(itemName, itemPrice, categpryId, itemId);
-        allCategoryItems.Add(newItem);
+        string expenseItemName = rdr.GetString(1);
+        double expenseItemPrice = rdr.GetDouble(2);
+        ExpenseItem newExpenseItem= new ExpenseItem(expenseItemName, expenseItemPrice, categpryId, expenseItemId);
+        allIncomeCategoryExpenseItems.Add(newExpenseItem);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allCategoryItems;
+      return allIncomeCategoryExpenseItems;
     }
 
     public double GetTotal()
@@ -130,12 +130,12 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT price FROM items;";
+      cmd.CommandText = "SELECT price FROM expenseItems;";
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        double itemPrice = rdr.GetDouble(0);
-        total += itemPrice;
+        double expenseItemPrice = rdr.GetDouble(0);
+        total += expenseItemPrice;
       }
       // _total = total;
       return total;
@@ -146,7 +146,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM incomeCategories WHERE id = @searchId; DELETE FROM items WHERE incomeCategory_id = @searchId;";
+      cmd.CommandText = @"DELETE FROM incomeCategories WHERE id = @searchId; DELETE FROM expenseItems WHERE incomeCategory_id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -182,12 +182,12 @@ namespace FinanceCounter.Models
       }
     }
 
-    public void DeleteAllItems()
+    public void DeleteAllExpenseItems()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM items WHERE incomeCategories_id = @searchId;";
+      cmd.CommandText = @"DELETE FROM expenseItems WHERE incomeCategories_id = @searchId;";
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
       searchId.Value = _id;
@@ -205,7 +205,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE  FROM incomeCategories; DELETE FROM items;";
+      cmd.CommandText = @"DELETE  FROM incomeCategories; DELETE FROM expenseItems;";
       cmd.ExecuteNonQuery();
       conn.Close();
       if (conn != null)
@@ -218,17 +218,17 @@ namespace FinanceCounter.Models
 
 
 // ==========================TESTS =========================================
-    public override bool Equals(System.Object otherCategory)
+    public override bool Equals(System.Object otherIncomeCategory)
     {
-      if (!(otherCategory is Category))
+      if (!(otherIncomeCategory is IncomeCategory))
       {
         return false;
       }
       else
       {
-        Category newCategory = (Category) otherCategory;
-        bool idEquality = this.GetId().Equals(newCategory.GetId());
-        bool nameEquality = this.GetName().Equals(newCategory.GetName());
+        IncomeCategory newIncomeCategory = (IncomeCategory) otherIncomeCategory;
+        bool idEquality = this.GetId().Equals(newIncomeCategory.GetId());
+        bool nameEquality = this.GetName().Equals(newIncomeCategory.GetName());
         return (idEquality && nameEquality);
       }
     }
