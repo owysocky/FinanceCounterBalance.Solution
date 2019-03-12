@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using FinanceCounter.Models;
 
 namespace FinanceCounter.Controllers
@@ -61,12 +62,12 @@ namespace FinanceCounter.Controllers
       }
 
       [HttpPost("/accounts/{id}/update")]
-      public ActionResult Update(string name, int id)
+      public ActionResult Update(string newName, int id)
       {
+        Account account = Account.Find(id);
         Dictionary<string, object> model = new Dictionary<string, object>();
         List<ExpenseCategory> expenseCategories = account.GetExpenseCategories();
         List<IncomeCategory> incomeCategories = account.GetIncomeCategories();
-        Account account = Account.Find(id);
         account.Edit(newName);
         model.Add("account", account);
         model.Add("expenseCategories", expenseCategories);

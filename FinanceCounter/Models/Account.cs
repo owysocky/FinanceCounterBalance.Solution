@@ -52,7 +52,7 @@ namespace FinanceCounter.Models
       {
         int accountId = rdr.GetInt32(0);
         string accountName = rdr.GetString(1);
-        double accountBalance = rdr.GerDouble(2);
+        double accountBalance = rdr.GetDouble(2);
         Account newAccount = new Account(accountName, accountBalance, accountId);
         allAccount.Add(newAccount);
       }
@@ -82,7 +82,7 @@ namespace FinanceCounter.Models
       {
         accountId = rdr.GetInt32(0);
         accountName = rdr.GetString(1);
-        accountBalance = rdr.GerDouble(2);
+        accountBalance = rdr.GetDouble(2);
       }
       Account newAccount = new Account(accountName, accountBalance, accountId);
       conn.Close();

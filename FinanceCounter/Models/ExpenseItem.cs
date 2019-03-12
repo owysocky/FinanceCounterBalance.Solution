@@ -192,7 +192,7 @@ namespace FinanceCounter.Models
         bool idEquality = this.GetId() == newExpenseItem.GetId();
         bool nameEquality = this.GetName() == newExpenseItem.GetName();
         bool expenseCategoryEquality = this.GetExpenseCategoryId() == newExpenseItem.GetExpenseCategoryId();
-        bool priceEquality = this.GetPrice().Equals(newExpenseCategory.GetPrice());
+        bool priceEquality = this.GetPrice().Equals(newExpenseItem.GetPrice());
         return (idEquality && nameEquality && expenseCategoryEquality && priceEquality);
        }
     }

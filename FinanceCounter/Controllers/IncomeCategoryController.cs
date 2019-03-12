@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Mvc;
@@ -28,21 +27,21 @@ namespace FinanceCounter.Controllers
     [HttpGet("/income/categories/{id}")]
     public ActionResult Show(int id)
     {
-      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id);
+      IncomeCategory newIncomeCategory = IncomeCategory.Find(id);
       return View(newIncomeCategory);
     }
 
     [HttpGet("/income/categories/{id}/edit")]
     public ActionResult Edit(int id)
     {
-      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id);
+      IncomeCategory newIncomeCategory = IncomeCategory.Find(id);
       return View(newIncomeCategory);
     }
 
     [HttpPost("/income/categories/{id}/update")]
-    public ActionResult Update(string newName, double newIncome, int id)
+    public ActionResult Update(string newName, double newTotal, int id)
     {
-      IncomeCategory newIncomeCategory = IncomeCategory.Find(int id);
+      IncomeCategory newIncomeCategory = IncomeCategory.Find(id);
       newIncomeCategory.Edit(newName, newTotal);
       return View("Show", newIncomeCategory);
     }
