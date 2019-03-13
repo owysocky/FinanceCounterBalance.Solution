@@ -63,8 +63,24 @@
       }
       </ol>
       <a href='/accounts/@Model["account"].GetId()/income/new'><button class="addbtn">
-      Add Income</button></a>
+      Add Income</button></a><br><br>
+      <form action="/accounts/@Model["account"].GetId()/income/deleteall" method="post">
+        <button type="submit" class="addbtn">Delete all income(s)</button>
+      </form>
+      <h4>Expense(s):</h4>
+      <ol>
+      @foreach (var expense in @Model["expenseCategories"])
+      {
+        <li><a href="/accounts/@Model["account"].GetId()/expense/@expense.GetId()">@expense.GetName() - $@expense.GetTotal()</a></li>
+      }
+      </ol>
+      <a href='/accounts/@Model["account"].GetId()/expense/new'><button class="addbtn">
+      Add Expense</button></a><br><br>
+      <form action="/accounts/@Model["account"].GetId()/expense/deleteall" method="post">
+        <button type="submit" class="addbtn">Delete all expense(s)</button>
+      </form>
       <br><br><br>
+
 
       <a href='/accounts/@Model["account"].GetId()/edit'><button class="addbtn">
       Edit this account</button></a>

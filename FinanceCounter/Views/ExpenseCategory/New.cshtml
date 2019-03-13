@@ -49,23 +49,20 @@
             </button>
         </div>
     </nav>
-    <div id="incomeShow">
-    <h2>Details of @Model["newIncomeCategory"].GetName() in @Model["account"].GetName()</h2>
-    <h3>Income Amount: $@Model["newIncomeCategory"].GetTotal()</h3>
-    <br>
-    <a href="/accounts/@Model["account"].GetId()/income/@Model["newIncomeCategory"].GetId()/edit">
-    <button class="addbtn">Edit this income</button>
-    </a>
-    <br><br>
-    <form action="/accounts/@Model["account"].GetId()/income/@Model["newIncomeCategory"].GetId()/delete" method="post">
-      <button type="submit" class="addbtn">Delete this income</button>
-    </form>
-    <br>
-    <a href="/accounts/@Model["account"].GetId()">
-    <button class="addbtn">Back to account details</button>
-    <div class="line"></div>
-    </div>
 
+    <h2>Add a new expense category:</h2>
+    <form action='/accounts/@Model.GetId()/expense' method='post'>
+
+      <label for='name'>Expense Category: </label>
+      <input id='name' name='name' type='text' required>
+      <br><br>
+      <button type='submit' class="addbtn">Add Account</button>
+    </form>
+
+    <div class="line"></div>
+    <p><a href="/accounts/@Model.GetId()">Previous Page</a></p>
+    <p><a href="/">Back home</a></p>
+    </div>
 </div>
 
 

@@ -7,17 +7,6 @@ namespace FinanceCounter.Controllers
 {
   public class IncomeCategoryController : Controller
   {
-    [HttpGet("/accounts/{accountId}/income")]
-    public ActionResult Index(int accountId)
-    {
-      Dictionary<string, object> model = new Dictionary<string, object>();
-      Account account = Account.Find(accountId);
-      List<IncomeCategory> incomeCategory = IncomeCategory.GetAll();
-      model.Add("account",account);
-      model.Add("incomeCategory", incomeCategory);
-      return View(model);
-    }
-
     [HttpGet("/accounts/{accountId}/income/new")]
     public ActionResult New(int accountId)
     {
@@ -25,7 +14,7 @@ namespace FinanceCounter.Controllers
       return View(account);
     }
 
-    [HttpPost("/accounts/{accountId}")]
+    [HttpPost("/accounts/{accountId}/income")]
     public ActionResult Create(int accountId, string incomeCategoryName, double total, int id)
 
     {
@@ -45,19 +34,23 @@ namespace FinanceCounter.Controllers
       return View(model);
     }
 
-    [HttpGet("/income/categories/{id}/edit")]
-    public ActionResult Edit(int id)
+    [HttpGet("/accounts/{accountId}/income/{id}/edit")]
+    public ActionResult Edit(int accountId, int id)
     {
+      Dictionary<string, object> model = new Dictionary<string, object>();
+      Account account = Account.Find(accountId);
       IncomeCategory newIncomeCategory = IncomeCategory.Find(id);
-      return View(newIncomeCategory);
+      model.Add("account",account);
+      model.Add("newIncomeCategory",newIncomeCategory);
+      return View(model);
     }
 
-    [HttpPost("/income/categories/{id}/update")]
+    [HttpPost("/accounts/{accountId}/income/{id}")]
     public ActionResult Update(string newName, double newTotal, int id)
     {
       IncomeCategory newIncomeCategory = IncomeCategory.Find(id);
       newIncomeCategory.Edit(newName, newTotal);
-      return View("Show", newIncomeCategory);
+      return RedirectToAction("Show",newIncomeCategory);
     }
 
     [HttpPost("/accounts/{accountId}/income/{id}/delete")]
@@ -65,6 +58,13 @@ namespace FinanceCounter.Controllers
     {
       IncomeCategory newIncomeCategory = IncomeCategory.Find(id);
       newIncomeCategory.Delete();
+      return RedirectToAction("Show", "Account", new {id = accountId});
+    }
+
+    [HttpPost("accounts/{accountId}/income/deleteall")]
+    public ActionResult DeleteAll(int accountId)
+    {
+      IncomeCategory.DeleteAllCategories();
       return RedirectToAction("Show", "Account", new {id = accountId});
     }
 
