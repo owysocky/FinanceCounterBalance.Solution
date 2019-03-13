@@ -27,8 +27,10 @@ namespace FinanceCounter.Controllers
     public ActionResult Show(int accountId, int id)
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
+      Account account = Account.Find(accountId);
       ExpenseCategory expenseCategory = ExpenseCategory.Find(id);
       //List<ExpenseItem> categoryItems = expenseCategory.GetExpenseItems();
+      model.Add("account",account);
       model.Add("expenseCategory", expenseCategory);
       //model.Add("categoryItems", categoryItems);
       return View(model);
@@ -49,20 +51,23 @@ namespace FinanceCounter.Controllers
       return RedirectToAction("Show", "Account", new {id = accountId});
     }
 
-    // [HttpPost("/expense/{id}/update")]
-    // public ActionResult Update(int id, string newName)
-    // {
-    //   ExpenseCategory expenseCategory = ExpenseCategory.Find(id);
-    //   expenseCategory.Edit(newName);
-    //   return RedirectToAction("Show", id);
-    // }
-    //
-    // [HttpPost("/expense/{id}/edit")]
-    // public ActionResult Edit(int id)
-    // {
-    //   ExpenseCategory expenseCategory = ExpenseCategory.Find(id);
-    //   return View(expenseCategory);
-    // }
+    [HttpGet("/accounts/{accountId}/expense/{id}/edit")]
+    public ActionResult Edit(int accountId, int id)
+    {
+      Dictionary<string, object> model = new Dictionary<string, object>();
+      Account account = Account.Find(accountId);
+      ExpenseCategory newExpenseCategory = ExpenseCategory.Find(id);
+      model.Add("account",account);
+      model.Add("newExpenseCategory",newExpenseCategory);
+      return View(model);
+    }
 
+    [HttpPost("/accounts/{accountId}/expense/{id}")]
+    public ActionResult Update(string newName, int id)
+    {
+      ExpenseCategory newExpenseCategory = ExpenseCategory.Find(id);
+      newExpenseCategory.Edit(newName);
+      return RedirectToAction("Show",newExpenseCategory);
+    }
   }
 }

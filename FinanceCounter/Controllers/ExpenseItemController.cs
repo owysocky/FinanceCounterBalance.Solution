@@ -9,24 +9,34 @@
 //   {
 //
 //     [HttpGet("/account/{accountId}/expense/{expenseId}/items/{itemId}")]
-//     public ActionResult Show(int itemId)
+//     public ActionResult Show(int expenseId, int itemId)
 //     {
-//       ExpenseItem newExpenseItem = ExpenseItem.Find(id);
-//       return Show(newExpenseItem);
+//       Dictionary<string, object> model = new Dictionary<string, object>();
+//       ExpenseItem expenseItem = ExpenseItem.Find(itemId);
+//       ExpenseCategory expenseCategory = ExpenseCategory.Find(expenseId);
+//       model.Add("expenseItem", expenseItem);
+//       model.Add("expenseCategory", expenseCategory);
+//       return Show(model);
 //     }
 //
-//     [HttpGet("/account/{accountId}/expense/{expenseId}/items/new")]
-//     public ActionResult New()
+//     [HttpGet("/account/{accountId}/expense/{expenseId}/items/{itemId}/edit")]
+//     public ActionResult Edit(int expenseId, int itemId)
 //     {
-//       return View();
+//       ExpenseItem expenseItem = ExpenseItem.Find(itemId);
+//       ExpenseCategory expenseCategory = ExpenseCategory.Find(expenseId);
+//       return Show();
 //     }
 //
-//     [HttpGet("/account/{accountId}/expense/{expenseId}/items/create")]
-//     public ActionResult Create(string name, double price, int expenseId)
+//     [HttpPost("/account/{accountId}/expense/{expenseId}/items/{itemId}/update")]
+//     public ActionResult Update(int expenseId, int itemId, string newName, double newPrice)
 //     {
-//       ExpenseItem newExpenseItem = new ExpenseItem(name, price, expenseId);
-//       newExpenseItem.Save();
-//       return ();
+//       Dictionary<string, object> model = new Dictionary<string, object>();
+//       ExpenseItem expenseItem = ExpenseItem.Find(itemId);
+//       expenseItem.Edit(newName, newPrice);
+//       ExpenseCategory expenseCategory = ExpenseCategory.Find(expenseId);
+//       model.Add("expenseItem", expenseItem);
+//       model.Add("expenseCategory", expenseCategory);
+//       return RedierectToAction("Show", model);
 //     }
 //
 //
