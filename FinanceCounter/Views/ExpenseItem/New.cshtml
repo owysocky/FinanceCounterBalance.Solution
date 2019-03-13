@@ -49,33 +49,22 @@
             </button>
         </div>
     </nav>
-    <div id="incomeShow">
-    <h2>Details of @Model["expenseCategory"].GetName() in @Model["account"].GetName()</h2>
-    <h3>Expenses in @Model["expenseCategory"].GetName() Total: $@Model["expenseCategory"].GetTotal()</h3>
-    <h4>Item(s):</h4>
-    <ol>
-    @foreach (var item in @Model["categoryItems"])
-    {
-      <li><a href="/accounts/@Model["account"].GetId()/expense/@Model["expenseCategory"].GetId()/items/@item.GetId()">@item.GetName() - $@item.GetPrice()</a></li>
-    }
-    </ol>
-    <a href="/accounts/@Model["account"].GetId()/expense/@Model["expenseCategory"].GetId()/items/new">
-    <button class="addbtn">Add Item</button>
-    </a>
-    <br><br>
-    <a href="/accounts/@Model["account"].GetId()/expense/@Model["expenseCategory"].GetId()/edit">
-    <button class="addbtn">Edit this expense</button>
-    </a>
-    <br><br>
-    <form action="/accounts/@Model["account"].GetId()/expense/@Model["expenseCategory"].GetId()/delete" method="post">
-      <button type="submit" class="addbtn">Delete this expense</button>
-    </form>
-    <br>
-    <a href="/accounts/@Model["account"].GetId()">
-    <button class="addbtn">Back to account details</button></a>
-    <div class="line"></div>
-    </div>
 
+    <h2>Add a new item:</h2>
+    <form action='/accounts/@Model["account"].GetId()/expense/@Model["expenseCategory"].GetId()/items' method='post'>
+
+      <label for='name'>Item Name: </label>
+      <input id='name' name='name' type='text' required>
+      <br><br>
+      <label for='price'>Item Price: </label>
+      <input id='price' name='price' type='number' step="0.01" required>
+      <button type='submit' class="addbtn">Add Item</button>
+    </form>
+
+    <div class="line"></div>
+    <p><a href="/accounts/@Model["account"].GetId()/expense/@Model["expenseCategory"].GetId()">Previous Page</a></p>
+    <p><a href="/">Back home</a></p>
+    </div>
 </div>
 
 
