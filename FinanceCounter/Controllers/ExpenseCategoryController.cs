@@ -8,13 +8,13 @@ namespace FinanceCounter.Controllers
   public class ExpenseCategoryController : Controller
   {
 
-    [HttpGet("/expense/new")]
+    [HttpGet("accounts/{accountId}/expense/new")]
     public ActionResult New()
     {
       return View();
     }
 
-    [HttpGet("/expense/{id}")]
+    [HttpGet("/accounts/{accountId}/expense/{id}")]
     public ActionResult Show(int id)
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
@@ -33,7 +33,7 @@ namespace FinanceCounter.Controllers
       return RedirectToAction("Show", "Account", new {id = accountId});
     }
 
-    [HttpPost("/expense/{id}/delete")]
+    [HttpPost("accounts/{accountId}/expense/{id}/delete")]
     public ActionResult Delete(int id)
     {
       ExpenseCategory expenseCategory = ExpenseCategory.Find(id);
@@ -41,14 +41,14 @@ namespace FinanceCounter.Controllers
       return View();
     }
 
-    [HttpPost("/expense/delete")]
+    [HttpPost("accounts/{accountId}/expense/delete")]
     public ActionResult DeleteAll(int id)
     {
       ExpenseCategory.Delete();
       return View();
     }
 
-    [HttpPost("/expense/{id}/update")]
+    [HttpPost("accounts/{accountId}/expense/{id}/update")]
     public ActionResult Update(int id, string newName)
     {
       ExpenseCategory expenseCategory = ExpenseCategory.Find(id);
@@ -56,20 +56,20 @@ namespace FinanceCounter.Controllers
       return RedirectToAction("Show", id);
     }
 
-    [HttpPost("/expense/{id}/edit")]
+    [HttpPost("accounts/{accountId}/expense/{id}/edit")]
     public ActionResult Edit(int id)
     {
       ExpenseCategory expenseCategory = ExpenseCategory.Find(id);
       return View(expenseCategory);
     }
 //=========== Form for New Item ====================
-    [HttpGet("/account/{accountId}/expense/{expenseId}/items/new")]
+    [HttpGet("/accounts/{accountId}/expense/{expenseId}/items/new")]
     public ActionResult NewItem()
     {
       return View();
     }
 //=========== Create New Item ====================
-    [HttpGet("/account/{accountId}/expense/{expenseId}/items/create")]
+    [HttpGet("/accounts/{accountId}/expense/{expenseId}/items/create")]
     public ActionResult CreateItem(string name, double price, int expenseId)
     {
       ExpenseItem newExpenseItem = new ExpenseItem(name, price, expenseId);
