@@ -13,6 +13,7 @@ namespace FinanceCounter.Controllers
     {
       Account account = Account.Find(accountId);
       return View(account);
+
     }
 
     [HttpPost("accounts/{accountId}/expense")]
@@ -23,8 +24,10 @@ namespace FinanceCounter.Controllers
       return RedirectToAction("Show", "Account", new {id = accountId});
     }
 
+
     [HttpGet("accounts/{accountId}/expense/{id}")]
     public ActionResult Show(int accountId, int id)
+
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
       Account account = Account.Find(accountId);
@@ -36,6 +39,7 @@ namespace FinanceCounter.Controllers
       return View(model);
     }
 
+
     [HttpPost("accounts/{accountId}/expense/{id}/delete")]
     public ActionResult Delete(int accountId, int id)
     {
@@ -46,13 +50,16 @@ namespace FinanceCounter.Controllers
 
     [HttpPost("accounts/{accountId}/expense/deleteall")]
     public ActionResult DeleteAll(int accountId)
+
     {
       ExpenseCategory.DeleteAllExpenseCategories();
       return RedirectToAction("Show", "Account", new {id = accountId});
     }
 
+
     [HttpGet("/accounts/{accountId}/expense/{id}/edit")]
     public ActionResult Edit(int accountId, int id)
+
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
       Account account = Account.Find(accountId);
@@ -60,6 +67,20 @@ namespace FinanceCounter.Controllers
       model.Add("account",account);
       model.Add("newExpenseCategory",newExpenseCategory);
       return View(model);
+    }
+//=========== Form for New Item ====================
+    [HttpGet("/accounts/{accountId}/expense/{expenseId}/items/new")]
+    public ActionResult NewItem()
+    {
+      return View();
+    }
+//=========== Create New Item ====================
+    [HttpPost("/accounts/{accountId}/expense/{expenseId}/items/create")]
+    public ActionResult CreateItem(string name, double price, int expenseId)
+    {
+      ExpenseItem newExpenseItem = new ExpenseItem(name, price, expenseId);
+      newExpenseItem.Save();
+      return RedirectToAction("Show", new {id = expenseId});
     }
 
     [HttpPost("/accounts/{accountId}/expense/{id}")]
