@@ -9,25 +9,17 @@ namespace FinanceCounter.Controllers
   {
 
     [HttpGet("/account/{accountId}/expense/{expenseId}/items/{itemId}")]
-    public ActionResult Show(int itemId)
+    public ActionResult Show(int expenseId, int itemId)
     {
-      ExpenseItem newExpenseItem = ExpenseItem.Find(id);
-      return Show(newExpenseItem);
+      Dictionary<string, object> model = new Dictionary<string, object>();
+      ExpenseItem expenseItem = ExpenseItem.Find(itemId);
+      ExpenseCategory expenseCategory = ExpenseCategory.Find(expenseId);
+      model.Add("expenseItem", expenseItem);
+      model.Add("expenseCategory", expenseCategory);
+      return Show(model);
     }
 
-    [HttpGet("/account/{accountId}/expense/{expenseId}/items/new")]
-    public ActionResult New()
-    {
-      return View();
-    }
 
-    [HttpGet("/account/{accountId}/expense/{expenseId}/items/create")]
-    public ActionResult Create(string name, double price, int expenseId)
-    {
-      ExpenseItem newExpenseItem = new ExpenseItem(name, price, expenseId);
-      newExpenseItem.Save();
-      return ();
-    }
 
 
 

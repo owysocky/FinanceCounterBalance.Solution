@@ -62,6 +62,20 @@ namespace FinanceCounter.Controllers
       ExpenseCategory expenseCategory = ExpenseCategory.Find(id);
       return View(expenseCategory);
     }
+//=========== Form for New Item ====================
+    [HttpGet("/account/{accountId}/expense/{expenseId}/items/new")]
+    public ActionResult NewItem()
+    {
+      return View();
+    }
+//=========== Create New Item ====================
+    [HttpGet("/account/{accountId}/expense/{expenseId}/items/create")]
+    public ActionResult CreateItem(string name, double price, int expenseId)
+    {
+      ExpenseItem newExpenseItem = new ExpenseItem(name, price, expenseId);
+      newExpenseItem.Save();
+      return RedirectToAction("Show", new {id = expenseId});
+    }
 
   }
 }
