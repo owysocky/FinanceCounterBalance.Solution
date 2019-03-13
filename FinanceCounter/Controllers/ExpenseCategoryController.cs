@@ -32,10 +32,10 @@ namespace FinanceCounter.Controllers
       Dictionary<string, object> model = new Dictionary<string, object>();
       Account account = Account.Find(accountId);
       ExpenseCategory expenseCategory = ExpenseCategory.Find(id);
-      //List<ExpenseItem> categoryItems = expenseCategory.GetExpenseItems();
+      List<ExpenseItem> categoryItems = expenseCategory.GetExpenseItems();
       model.Add("account",account);
       model.Add("expenseCategory", expenseCategory);
-      //model.Add("categoryItems", categoryItems);
+      model.Add("categoryItems", categoryItems);
       return View(model);
     }
 

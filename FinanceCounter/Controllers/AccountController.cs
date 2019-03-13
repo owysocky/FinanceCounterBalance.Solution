@@ -71,18 +71,12 @@ namespace FinanceCounter.Controllers
        return View(model);
      }
 
-     [HttpPost("/accounts/{id}/update")]
+     [HttpPost("/accounts/{id}")]
      public ActionResult Update(string newName, int id)
      {
        Account account = Account.Find(id);
-       Dictionary<string, object> model = new Dictionary<string, object>();
-       List<ExpenseCategory> expenseCategories = account.GetExpenseCategories();
-       List<IncomeCategory> incomeCategories = account.GetIncomeCategories();
        account.Edit(newName);
-       model.Add("account", account);
-       model.Add("expenseCategories", expenseCategories);
-       model.Add("incomeCategories", incomeCategories);
-       return View("Show", model);
+       return RedirectToAction("Show",account);
      }
 
 
