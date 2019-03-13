@@ -86,7 +86,7 @@ namespace FinanceCounter.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO expenseCategories (name, account_id) VALUES (@name, @accountId);";
+      cmd.CommandText = @"INSERT INTO expenseCategories (name, total, account_id) VALUES (@name, @total, @accountId);";
       MySqlParameter name = new MySqlParameter();
       name.ParameterName = "@name";
       name.Value = this._name;
@@ -95,6 +95,10 @@ namespace FinanceCounter.Models
       accountId.ParameterName = "@accountId";
       accountId.Value = this._account_id;
       cmd.Parameters.Add(accountId);
+      MySqlParameter total = new MySqlParameter();
+      total.ParameterName = "@total";
+      total.Value = this._total;
+      cmd.Parameters.Add(total);
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
       conn.Close();

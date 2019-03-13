@@ -49,28 +49,21 @@
             </button>
         </div>
     </nav>
-    <div id="incomeIndex">
-    <h2>Income in @Model["account"].GetName()</h2>
-    @if (@Model["incomeCategory"].Count != 0)
-    {
-    <ol>
-    @foreach (var income in @Model["incomeCategory"])
-    {
-      <li><a href='/accounts/@Model["account"].GetId()/income/@income.GetId()'>@income.GetName() - $@income.GetTotal()</a></li>
-    }
-    </ol>
-    }
-    @if (@Model["incomeCategory"].Count == 0)
-    {
-    <h3>You have no income inputted yet.</h3>
-    <a href="/accounts/@Model["account"].GetId()/income/new"><button class="addbtn">
-    Add a new income</button></a>
-    }
-    <br><br>
-    <p><a href="/accounts/@Model["account"].GetId()">Previous Page</a></p>
-    <p><a href="/">Back home</a></p>
-    </div>
+
+    <h2>Edit @Model["newIncomeCategory"].GetName():</h2>
+    <form action='/accounts/@Model["account"].GetId()/income/@Model["newIncomeCategory"].GetId()' method='post'>
+
+      <label for='newName'>New Income Name: </label>
+      <input id='newName' name='newName' type='text' required>
+      <br><br>
+      <label for='newTotal'>New Income Amount: </label>
+      <input id='newTotal' name='newTotal' type='number' step="0.01" required>
+      <button type='submit' class="addbtn">Update Income</button>
+    </form>
+
     <div class="line"></div>
+    <p><a href="/accounts/@Model["account"].GetId()/income/@Model["newIncomeCategory"].GetId()">Previous Page</a></p>
+    <p><a href="/">Back home</a></p>
     </div>
 </div>
 
