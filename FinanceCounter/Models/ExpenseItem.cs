@@ -155,6 +155,24 @@ namespace FinanceCounter.Models
       }
     }
 
+    public static void DeleteAll(int categpryId)
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM expenseItems WHERE expenseCategory_id = @searchId;";
+      MySqlParameter searchId = new MySqlParameter();
+      searchId.ParameterName = "@searchId";
+      searchId.Value = categpryId;
+      cmd.Parameters.Add(searchId);
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+    }
+
 // ====================== TESTS =================================
 
     public override bool Equals(System.Object otherExpenseItem)
