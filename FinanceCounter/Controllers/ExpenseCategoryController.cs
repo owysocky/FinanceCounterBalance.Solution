@@ -44,7 +44,8 @@ namespace FinanceCounter.Controllers
     [HttpPost("accounts/{accountId}/expense/delete")]
     public ActionResult DeleteAll(int id)
     {
-      ExpenseCategory.Delete();
+      ExpenseCategory expenseCategory = ExpenseCategory.Find(id);
+      expenseCategory.Delete();
       return View();
     }
 

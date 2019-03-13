@@ -16,7 +16,7 @@ namespace FinanceCounter.Controllers
       ExpenseCategory expenseCategory = ExpenseCategory.Find(expenseId);
       model.Add("expenseItem", expenseItem);
       model.Add("expenseCategory", expenseCategory);
-      return Show(model);
+      return View(model);
     }
 
     [HttpGet("/account/{accountId}/expense/{expenseId}/items/{itemId}/edit")]
@@ -24,7 +24,7 @@ namespace FinanceCounter.Controllers
     {
       ExpenseItem expenseItem = ExpenseItem.Find(itemId);
       ExpenseCategory expenseCategory = ExpenseCategory.Find(expenseId);
-      return Show();
+      return View();
     }
 
     [HttpPost("/account/{accountId}/expense/{expenseId}/items/{itemId}/update")]
@@ -36,10 +36,23 @@ namespace FinanceCounter.Controllers
       ExpenseCategory expenseCategory = ExpenseCategory.Find(expenseId);
       model.Add("expenseItem", expenseItem);
       model.Add("expenseCategory", expenseCategory);
-      return RedierectToAction("Show", model);
+      return View("Show", model);
     }
 
+    [HttpPost("/account/{accountId}/expense/{expenseId}/items/{itemId}/delete")]
+    public ActionResult Delete(int expenseId, int itemId)
+    {
+      ExpenseItem expenseItem = ExpenseItem.Find(itemId);
+      expenseItem.Delete();
+      return RedirectToAction("Show", "ExpenseCategory", new {id = expenseId});
+    }
 
+    [HttpPost("/account/{accountId}/expense/{expenseId}/items/delete")]
+    public ActionResult DeleteAll(int expenseId)
+    {
+      ExpenseItem.DeleteAll(expenseId);
+      return RedirectToAction("Show", "ExpenseCategory", new {id = expenseId});
+    }
 
   }
 }
