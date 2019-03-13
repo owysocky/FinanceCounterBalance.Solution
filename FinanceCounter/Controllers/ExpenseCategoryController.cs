@@ -69,7 +69,7 @@ namespace FinanceCounter.Controllers
       return View();
     }
 //=========== Create New Item ====================
-    [HttpGet("/accounts/{accountId}/expense/{expenseId}/items/create")]
+    [HttpPost("/accounts/{accountId}/expense/{expenseId}/items/create")]
     public ActionResult CreateItem(string name, double price, int expenseId)
     {
       ExpenseItem newExpenseItem = new ExpenseItem(name, price, expenseId);
