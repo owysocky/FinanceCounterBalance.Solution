@@ -68,20 +68,6 @@ namespace FinanceCounter.Controllers
       model.Add("newExpenseCategory",newExpenseCategory);
       return View(model);
     }
-//=========== Form for New Item ====================
-    [HttpGet("/accounts/{accountId}/expense/{expenseId}/items/new")]
-    public ActionResult NewItem()
-    {
-      return View();
-    }
-//=========== Create New Item ====================
-    [HttpPost("/accounts/{accountId}/expense/{expenseId}/items/create")]
-    public ActionResult CreateItem(string name, double price, int expenseId)
-    {
-      ExpenseItem newExpenseItem = new ExpenseItem(name, price, expenseId);
-      newExpenseItem.Save();
-      return RedirectToAction("Show", new {id = expenseId});
-    }
 
     [HttpPost("/accounts/{accountId}/expense/{id}")]
     public ActionResult Update(string newName, int id)
