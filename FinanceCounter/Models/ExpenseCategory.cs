@@ -11,7 +11,7 @@ namespace FinanceCounter.Models
     private string _name;
     private double _total;
 
-    public ExpenseCategory(int account_id, string name, double total = 0, int id = 0)
+    public ExpenseCategory(int account_id, string name, double total = 0.00, int id = 0)
     {
       _account_id = account_id;
       _name = name;
@@ -97,7 +97,7 @@ namespace FinanceCounter.Models
       cmd.Parameters.Add(accountId);
       MySqlParameter total = new MySqlParameter();
       total.ParameterName = "@total";
-      total.Value = this._total;
+      total.Value = this.GetTotal();
       cmd.Parameters.Add(total);
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
@@ -139,24 +139,41 @@ namespace FinanceCounter.Models
 
     public double GetTotal()
     {
-      double total = 0;
+
+      double totalExpense = 0;
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = "SELECT price FROM expenseItems WHERE expenseCategory_id = @searchId;";
-      MySqlParameter searchId = new MySqlParameter();
-      searchId.ParameterName = "@searchId";
-      searchId.Value = _id;
-      cmd.Parameters.Add(searchId);
+      cmd.CommandText = "SELECT price FROM expenseItems;";
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       while(rdr.Read())
       {
-        double expenseItemPrice = rdr.GetDouble(0);
-        total += expenseItemPrice;
+        double expenseCategoryTotal = rdr.GetDouble(0);
+        totalExpense += expenseCategoryTotal;
       }
-      this._total = total;
-      return total;
+      return totalExpense;
     }
+
+    // public double GetTotal()
+    // {
+    //   MySqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //   var cmd = conn.CreateCommand() as MySqlCommand;
+    //   cmd.CommandText = "SELECT price FROM expenseItems WHERE expenseCategory_id = @searchId;";
+    //   MySqlParameter searchId = new MySqlParameter();
+    //   searchId.ParameterName = "@searchId";
+    //   searchId.Value = this._id;
+    //   cmd.Parameters.Add(searchId);
+    //   var rdr = cmd.ExecuteReader() as MySqlDataReader;
+    //   double totalExpense = 0;
+    //   while(rdr.Read())
+    //   {
+    //     double expenseItemPrice = rdr.GetDouble(0);
+    //     totalExpense += expenseItemPrice;
+    //   }
+    //   this._total = totalExpense;
+    //   return totalExpense;
+    // }
 
     public void Delete()
     {

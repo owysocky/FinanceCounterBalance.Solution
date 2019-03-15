@@ -41,7 +41,7 @@ namespace FinanceCounter.Models
       this._balance = balance;
       MySqlParameter aBalance = new MySqlParameter();
       aBalance.ParameterName = "@balance";
-      aBalance.Value = this._balance;
+      aBalance.Value = this.GetBalance();
       cmd.Parameters.Add(aBalance);
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
