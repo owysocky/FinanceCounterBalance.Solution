@@ -28,7 +28,7 @@ _A web app that allows you track your finances by comparing your expenses to you
 
 ## Known Bugs
 
-_No known bugs! Please use relevant contact details to report any._
+_Total balance does not subtract expenses._
 
 ## Support and contact details
 

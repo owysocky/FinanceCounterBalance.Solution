@@ -32,10 +32,17 @@ namespace FinanceCounter.Models
       name.ParameterName = "@name";
       name.Value = this._name;
       cmd.Parameters.Add(name);
-      MySqlParameter balance = new MySqlParameter();
-      balance.ParameterName = "@balance";
-      balance.Value = this._balance;
-      cmd.Parameters.Add(balance);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      double balance = 0;
+      while(rdr.Read())
+      {
+        balance =  GetTotalIncome() - GetTotalExpense();
+      }
+      this._balance = balance;
+      MySqlParameter aBalance = new MySqlParameter();
+      aBalance.ParameterName = "@balance";
+      aBalance.Value = this._balance;
+      cmd.Parameters.Add(aBalance);
       cmd.ExecuteNonQuery();
       _id = (int) cmd.LastInsertedId;
       conn.Close();
